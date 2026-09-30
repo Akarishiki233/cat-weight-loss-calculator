@@ -58,8 +58,8 @@
 
   label{display:block;font-weight:700;font-size:14px;margin:18px 0 8px}
   label small{font-weight:600;color:var(--muted)}
-  input[type=number],select{width:100%;padding:13px 15px;border:2px solid var(--line);border-radius:14px;font-size:16px;font-family:inherit;background:#fff;transition:border-color .2s, box-shadow .2s;color:var(--ink)}
-  input[type=number]:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 4px rgba(249,115,22,.12)}
+  input[type=number],input[type=search],select{width:100%;padding:13px 15px;border:2px solid var(--line);border-radius:14px;font-size:16px;font-family:inherit;background:#fff;transition:border-color .2s, box-shadow .2s;color:var(--ink)}
+  input[type=number]:focus,input[type=search]:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 4px rgba(249,115,22,.12)}
   .row{display:flex;gap:12px}.row>div{flex:1}
   .hint{font-size:13px;color:var(--muted);margin-top:6px}
 
@@ -85,6 +85,19 @@
   #neuterRow{overflow:hidden;max-height:200px;transition:max-height .35s ease,opacity .3s;opacity:1}
   #neuterRow.hide{max-height:0;opacity:0;margin:0}
   #neuterRow.hide label{margin:0}
+
+  /* cat food database search */
+  .food-results{margin-top:10px;display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto}
+  .food-item{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;font-family:inherit;font-size:14px;color:var(--ink);transition:border-color .2s,transform .15s}
+  .food-item:hover{border-color:#f5c99a;transform:translateY(-1px)}
+  .food-item .fn{font-weight:700}
+  .food-item small{display:block;color:var(--muted);font-weight:600;font-size:12px;margin-top:2px}
+  .food-item .fk{font-weight:800;color:var(--brand-deep);white-space:nowrap;font-size:14px}
+  .food-picked{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px;padding:12px 14px;border:2px solid var(--brand);background:var(--brand-soft);border-radius:14px}
+  .food-picked .fn{font-weight:800;color:var(--brand-deep);font-size:14px}
+  .food-picked small{color:var(--muted);font-weight:600;font-size:12px}
+  .food-picked button{border:none;background:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline;white-space:nowrap}
+  p.disclaimer{margin:12px 0 0;font-size:12px;line-height:1.7;color:var(--muted);background:#faf7f2;border:1px dashed var(--line);border-radius:12px;padding:10px 12px}
 
   /* calculate button */
   button.calc{width:100%;margin-top:26px;padding:17px;border:none;border-radius:16px;font-size:18px;font-weight:900;font-family:inherit;cursor:pointer;color:#fff;
@@ -235,9 +248,22 @@
     <button type="button" data-v="lose">减肥</button>
   </div>
 
-  <label>猫粮热量密度 <small>— 看包装（kcal/kg）</small></label>
-  <input type="number" id="density" min="1000" max="6000" step="50" value="3600">
-  <p class="hint">干猫粮约 3600 kcal/kg · 湿猫粮约 800–1200 kcal/kg</p>
+  <label>猫粮热量密度 <small>— kcal/kg</small></label>
+  <div class="seg c2" id="densitySeg">
+    <button type="button" data-v="manual" class="active">✍️ 手动输入</button>
+    <button type="button" data-v="search">🔍 查找猫粮</button>
+  </div>
+  <div id="densityManual">
+    <input type="number" id="density" min="1000" max="6000" step="50" value="3600">
+    <p class="hint">干猫粮约 3600 kcal/kg · 湿猫粮约 800–1200 kcal/kg — 以包装标注为准</p>
+  </div>
+  <div id="densitySearch" hidden>
+    <input type="search" id="foodSearch" placeholder="搜索品牌或产品名，如：皇家 / Royal Canin" autocomplete="off">
+    <div class="food-results" id="foodResults"></div>
+    <div class="food-picked" id="foodPicked" hidden></div>
+    <p class="hint" id="foodDbInfo">正在加载猫粮数据库…</p>
+  </div>
+  <p class="disclaimer">热量数据整理自公开资料（更新于 2026-09-30），不同地区、批次或配方调整可能导致差异，请以包装标注为准。本工具仅为估算，不能替代兽医建议。</p>
 
   <button class="calc" onclick="calc()">计算每日喂食量 🐾</button>
 </div>
@@ -328,6 +354,12 @@ document.querySelectorAll('.seg').forEach(seg=>{
     if(seg.id==='stageSeg'){
       document.getElementById('neuterRow').classList.toggle('hide', b.dataset.v!=='adult');
     }
+    if(seg.id==='densitySeg'){
+      const search = b.dataset.v==='search';
+      document.getElementById('densityManual').hidden = search;
+      document.getElementById('densitySearch').hidden = !search;
+      if(search) document.getElementById('foodSearch').focus();
+    }
   });
 });
 function countUp(el, target, dur){
@@ -346,7 +378,8 @@ function calc(){
   const kg = unit==='lb' ? w/LB2KG : w;
   const stage = segVal('stageSeg'), neutered = segVal('neuterSeg'),
         act = segVal('actSeg'), goal = segVal('goalSeg');
-  const density = parseFloat(document.getElementById('density').value) || 3600;
+  const dMode = segVal('densitySeg');
+  const density = (dMode==='search' && pickedFood) ? pickedFood.kcal_per_kg : (parseFloat(document.getElementById('density').value) || 3600);
 
   const rer = 70 * Math.pow(kg, 0.75);
   let factor, note='';
@@ -380,6 +413,48 @@ function calc(){
     document.getElementById('portionFill').style.width = Math.min(100, grams/150*100)+'%';
   });
   setTimeout(()=>r.scrollIntoView({behavior:'smooth', block:'start'}), 60);
+}
+/* cat food calorie database */
+const escHtml = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const foodBrand = f => f.brand + (f.brand_zh && f.brand_zh !== f.brand ? ' (' + f.brand_zh + ')' : '');
+const foodProduct = f => f.product + (f.product_zh && f.product_zh !== f.product ? ' \u00b7 ' + f.product_zh : '');
+let foodDb = [], pickedFood = null;
+const T = {
+  loaded: n => '数据库共 '+n+' 款猫粮 · 更新于 2026-09-30 · 输入 2 个字以上开始搜索',
+  failed: '猫粮数据库加载失败，请手动输入热量值。',
+  none: '没有找到匹配的猫粮，试试英文品牌名，或手动输入热量值。',
+  clear: '清除'
+};
+fetch('/test-for-muse/data/cat-foods.json')
+  .then(r => { if(!r.ok) throw 0; return r.json(); })
+  .then(d => {
+    foodDb = d.foods || [];
+    document.getElementById('foodDbInfo').textContent = T.loaded(foodDb.length);
+  })
+  .catch(() => { document.getElementById('foodDbInfo').textContent = T.failed; });
+document.getElementById('foodSearch').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase();
+  const box = document.getElementById('foodResults');
+  if(q.length < 2){ box.innerHTML=''; return; }
+  const hits = foodDb.filter(f => [f.brand,f.brand_zh,f.product,f.product_zh].some(s => (s||'').toLowerCase().includes(q))).slice(0,8);
+  if(!hits.length){ box.innerHTML = '<p class="hint">'+T.none+'</p>'; return; }
+  box.innerHTML = '';
+  hits.forEach(f => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'food-item';
+    b.innerHTML = '<span><span class="fn">'+escHtml(foodBrand(f))+'</span><small>'+escHtml(foodProduct(f))+'</small></span><span class="fk">'+f.kcal_per_kg+' kcal/kg</span>';
+    b.addEventListener('click', () => pickFood(f));
+    box.appendChild(b);
+  });
+});
+function pickFood(f){
+  pickedFood = f;
+  document.getElementById('foodResults').innerHTML = '';
+  document.getElementById('foodSearch').value = '';
+  const chip = document.getElementById('foodPicked');
+  chip.hidden = false;
+  chip.innerHTML = '<span><span class="fn">'+escHtml(foodBrand(f))+' · '+escHtml(foodProduct(f))+'</span><br><small>'+f.kcal_per_kg+' kcal/kg</small></span><button type="button">'+T.clear+'</button>';
+  chip.querySelector('button').addEventListener('click', () => { pickedFood = null; chip.hidden = true; });
 }
 /* scroll reveal */
 const io = ('IntersectionObserver' in window) ? new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.08}) : null;
