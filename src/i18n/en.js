@@ -65,5 +65,29 @@ export default {
     error: "Hmm, that didn't send. Please try again in a moment.",
     fallback: "Still not working? Email us directly →" },
   disclaimer: "<b>Disclaimer:</b> This calculator gives an estimate based on standard veterinary formulas (RER/DER). Every cat is different — metabolism, breed and health conditions matter. Adjust based on weight trends and <b>consult your veterinarian</b>, especially for weight loss, kittens, or cats with medical conditions.",
-  footer: "Made for cats everywhere · v2.0"
+  footer: "Made for cats everywhere · v2.0",
+  food: {
+    title: "How much {name} should I feed my cat per day?",
+    metaDesc: "{name} has {kcal} kcal per kg. Daily feeding guide in grams for 3–6 kg cats — for weight maintenance and safe weight loss. Estimated with veterinary RER/DER formulas.",
+    kcalLabel: "Metabolizable energy",
+    perKg: "kcal/kg",
+    note: "Example: an average neutered adult cat with moderate activity.",
+    tableTitle: "Daily feeding guide (grams per day)",
+    thWeight: "Cat weight",
+    thMaintain: "Maintain weight",
+    thLose: "Safe weight loss",
+    methodTitle: "How it's calculated",
+    methodBody: "Resting Energy Requirement (RER) = 70 × weight in kg ^ 0.75. Daily Energy Requirement (DER) = RER × lifestyle factor (1.3 for a neutered adult with moderate activity, 0.8 for safe weight loss). Grams per day = DER ÷ kcal per kg × 1000.",
+    faqTitle: "Feeding questions",
+    faq1q: "How many grams of {name} per day for a 4 kg cat?",
+    faq1a: "About {g} g per day to maintain weight (roughly {kcal} kcal).",
+    faq2q: "Can I use {name} for weight loss?",
+    faq2a: "Yes — feed about 80% of the maintenance amount, weigh your cat weekly, and aim for 1–2% loss per week. Talk to your veterinarian before starting.",
+    disclaimer: "Feeding amounts are estimates from standard veterinary formulas. Calorie data is compiled from public sources and may vary by region, batch or formula changes — always check your package. This is not veterinary advice.",
+    ctaTitle: "Your cat is different?",
+    ctaBody: "Use the full calculator with your cat's weight, age, activity level and goal.",
+    ctaBtn: "Open the calculator 🐾",
+    moreTitle: "How much of each food per day?",
+    moreSub: "Feeding guides for popular cat foods, based on real calorie data."
+  }
 }

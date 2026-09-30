@@ -1,19 +1,29 @@
 <script setup>
 import { ref, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRoute, RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import SegControl from '../components/SegControl.vue'
 import CustomSelect from '../components/CustomSelect.vue'
 import FoodSearch from '../components/FoodSearch.vue'
 import FaqSection from '../components/FaqSection.vue'
 import FeedbackForm from '../components/FeedbackForm.vue'
-import { calculate, toKg, fromKg, localeFromPath } from '../lib/calc.js'
+import { calculate, toKg, fromKg, localeFromPath, foodDbFor, foodBrand, foodProduct } from '../lib/calc.js'
+import { foodPagePath } from '../lib/food-pages.js'
+import foodsData from '../data/cat-foods.json'
 
 const { t, tm } = useI18n()
 const route = useRoute()
 const locale = computed(() => localeFromPath(route.path))
 const isZh = computed(() => locale.value === 'zh')
+
+/* Feeding-guide pages for internal linking (locale-filtered by market). */
+const foodLinks = computed(() =>
+  foodDbFor(locale.value, foodsData.foods).map((f) => ({
+    name: `${foodBrand(f, isZh.value)} ${foodProduct(f, isZh.value)}`,
+    path: foodPagePath(locale.value, f.id),
+  })),
+)
 
 /* ---------------- SEO head (per locale, prerendered by vite-ssg) ---------------- */
 const SITE = 'https://akarishiki233.github.io/cat-weight-loss-calculator'
@@ -283,6 +293,16 @@ const tipText = computed(() =>
 
   <FaqSection />
 
+  <section v-reveal class="more-foods">
+    <h2>{{ t('food.moreTitle') }}</h2>
+    <p class="sub">{{ t('food.moreSub') }}</p>
+    <div class="chips">
+      <RouterLink v-for="f in foodLinks" :key="f.path" :to="f.path" class="chip">
+        {{ f.name }}
+      </RouterLink>
+    </div>
+  </section>
+
   <FeedbackForm />
 
   <div v-reveal class="disclaimer" v-html="t('disclaimer')"></div>
@@ -292,3 +312,37 @@ const tipText = computed(() =>
     {{ t('footer') }}
   </footer>
 </template>
+
+<style>
+.more-foods {
+  margin: 28px 0;
+}
+.more-foods h2 {
+  font-size: 1.2rem;
+  margin: 0 0 6px;
+}
+.more-foods .sub {
+  color: var(--muted, #8a7f72);
+  font-size: 0.92rem;
+  margin: 0 0 14px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid var(--card-border, #e8e2d9);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  color: inherit;
+  text-decoration: none;
+  background: var(--card-bg, #fff);
+}
+.chip:hover {
+  border-color: var(--accent, #e07b39);
+  color: var(--accent, #e07b39);
+}
+</style>

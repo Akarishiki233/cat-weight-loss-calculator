@@ -112,7 +112,7 @@ print('== 3. dist static files ==')
 for f in ['sitemap.xml', 'robots.txt', '404.html', 'google0caa8c740c641dd9.html', 'data/cat-foods.json']:
     check(f'dist/{f} exists', (DIST / f).exists())
 sm = (DIST / 'sitemap.xml').read_text() if (DIST / 'sitemap.xml').exists() else ''
-check('sitemap has 4 urls', sm.count('<loc>') == 4, f'found {sm.count("<loc>")}')
+check('sitemap has 123 urls (4 mains + 119 food pages)', sm.count('<loc>') == 123, f'found {sm.count("<loc>")}')
 
 print('== 4. i18n integrity ==')
 for loc in ['en', 'zh', 'ja', 'ko']:
@@ -189,6 +189,84 @@ print('== 6. calc lib tests (node) ==')
 r = run(['node', 'scripts/selftest-lib.mjs'])
 print(r.stdout)
 check('lib tests exit 0', r.returncode == 0, r.stdout[-300:] if r.returncode else '')
+
+print('== 7. food pages (programmatic SEO) ==')
+# Get the canonical page list from the same pure module the build uses,
+# so the test can never drift from the routes.
+PAGES_JS = """
+import { allFoodPages } from './src/lib/food-pages.js';
+import { readFileSync } from 'node:fs';
+const foods = JSON.parse(readFileSync('./src/data/cat-foods.json', 'utf-8')).foods;
+console.log(JSON.stringify(allFoodPages(foods)));
+"""
+r = run(['node', '--input-type=module', '-e', PAGES_JS])
+pages = json.loads(r.stdout or '[]')
+check('food page list from lib', r.returncode == 0 and len(pages) > 0, r.stderr[-200:] if r.returncode else '')
+check('119 food pages (7 zh-only + 28x4)', len(pages) == 119, f'got {len(pages)}')
+by_id = {}
+for p in pages:
+    by_id.setdefault(p['id'], []).append(p['locale'])
+check('cn foods zh-only', all(set(by_id[f['id']]) == {'zh'} for f in foods if f['market'] == 'cn'))
+check('intl foods all 4 locales', all(set(by_id[f['id']]) == {'en', 'zh', 'ja', 'ko'} for f in foods if f['market'] == 'intl'))
+
+# Every page prerendered to dist.
+missing = []
+for p in pages:
+    rel = p['path'].strip('/')
+    fp = DIST / (rel + '/index.html' if rel else 'index.html')
+    if not fp.exists():
+        missing.append(p['path'])
+check('all food pages in dist', not missing, f'{len(missing)} missing: {missing[:3]}')
+
+# Spot-check one page per locale: title, canonical, hreflang, kcal, table, JSON-LD.
+SAMPLES = [
+    ('en', 'royal-canin-indoor-adult', 'Royal Canin', '/foods/royal-canin-indoor-adult/', 4),
+    ('zh', 'fuliejia-tizhong-guanli', '弗列加特', '/zh/foods/fuliejia-tizhong-guanli/', 1),
+    ('ja', 'royal-canin-indoor-adult', 'Royal Canin', '/ja/foods/royal-canin-indoor-adult/', 4),
+    ('ko', 'royal-canin-indoor-adult', 'Royal Canin', '/ko/foods/royal-canin-indoor-adult/', 4),
+]
+food_by_id = {f['id']: f for f in foods}
+for loc, fid, brand_kw, path, n_hreflang in SAMPLES:
+    html = (DIST / (path.strip('/') + '/index.html')).read_text(encoding='utf-8')
+    kcal = str(food_by_id[fid]['kcal_per_kg'])
+    check(f'{loc}/{fid}: brand in title', brand_kw in html)
+    check(f'{loc}/{fid}: canonical',
+          f'href="{SITE}{path}"' in html and 'rel="canonical"' in html)
+    check(f'{loc}/{fid}: {n_hreflang} hreflangs + x-default',
+          html.count('hreflang="') == n_hreflang + 1,
+          f"got {html.count('hreflang=')}")
+    check(f'{loc}/{fid}: kcal {kcal} shown', kcal in html)
+    check(f'{loc}/{fid}: feeding table', '<table' in html and 'gMaintain' not in html)
+    check(f'{loc}/{fid}: FAQ JSON-LD', 'FAQPage' in html)
+    check(f'{loc}/{fid}: CTA button text', '🐾' in html)
+
+# cn food must NOT have en/ja/ko pages.
+for loc in ['en', 'ja', 'ko']:
+    fp = DIST / ((loc + '/foods/fuliejia-tizhong-guanli/index.html') if loc != 'en' else 'foods/fuliejia-tizhong-guanli/index.html')
+    check(f'no {loc} page for cn food', not fp.exists())
+
+# sitemap covers all food pages + 4 mains.
+sm = (ROOT / 'public/sitemap.xml').read_text(encoding='utf-8')
+check('sitemap 123 urls', sm.count('<url>') == 123, f'got {sm.count("<url>")}')
+check('sitemap has food urls', all(f'<loc>{SITE}{p["path"]}</loc>' in sm for p in pages))
+
+# i18n food-key parity across locales.
+FOOD_KEYS = ['title', 'metaDesc', 'kcalLabel', 'perKg', 'note', 'tableTitle', 'thWeight',
+             'thMaintain', 'thLose', 'methodTitle', 'methodBody', 'faqTitle', 'faq1q',
+             'faq1a', 'faq2q', 'faq2a', 'disclaimer', 'ctaTitle', 'ctaBody', 'ctaBtn',
+             'moreTitle', 'moreSub']
+for loc in ['en', 'zh', 'ja', 'ko']:
+    src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
+    m = re.search(r'food:\s*\{(.*?)\n  \}\n\}', src, re.S)
+    missing_keys = [k for k in FOOD_KEYS if not m or f'{k}:' not in m.group(1)]
+    check(f'{loc}.js: food keys complete', not missing_keys, f'missing {missing_keys}' if missing_keys else '')
+
+# Calculator page links to its locale's food pages (internal link equity).
+for loc, path, expect_n in [('en', 'index.html', 28), ('zh', 'zh/index.html', 35),
+                            ('ja', 'ja/index.html', 28), ('ko', 'ko/index.html', 28)]:
+    html = (DIST / path).read_text(encoding='utf-8')
+    n = html.count('/foods/')
+    check(f'{loc} calculator links {expect_n} food pages', n >= expect_n, f'got {n} /foods/ refs')
 
 print()
 if fails:
