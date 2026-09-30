@@ -18,7 +18,12 @@ const isZh = computed(() => locale.value === 'zh')
 const SITE = 'https://akarishiki233.github.io/test-for-muse'
 const pathFor = (l) => (l === 'en' ? '/' : `/${l}/`)
 const stripHtml = (s) =>
-  String(s).replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim()
+  String(s)
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 
 useHead({
   htmlAttrs: { lang: computed(() => (locale.value === 'zh' ? 'zh-CN' : locale.value)) },
