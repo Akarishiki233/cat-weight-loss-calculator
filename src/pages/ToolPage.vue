@@ -12,6 +12,8 @@ const route = useRoute()
 const locale = computed(() => localeFromPath(route.path))
 const key = computed(() => toolI18nKey(props.toolId))
 const tk = (k, params) => t(`${key.value}.${k}`, params)
+const toolIcon = { water: '💧', bcs: '⚖️', age: '🎂' }
+const bcsBtnClass = (n) => (n < 4 ? 'low' : n <= 5 ? 'ideal' : 'high')
 
 /* ---------- water ---------- */
 const waterWeight = ref(4.5)
@@ -108,7 +110,11 @@ useHead({
     <h1>{{ tk('title') }}</h1>
 
     <!-- water intake calculator -->
-    <section v-if="toolId === 'water'" class="card">
+    <section v-if="toolId === 'water'" class="card widget">
+      <div class="widget-head">
+        <span class="widget-icon">{{ toolIcon[toolId] }}</span>
+        <span>{{ tk('tagline') }}</span>
+      </div>
       <label class="fld">
         <span>{{ tk('weightLabel') }}</span>
         <input v-model.number="waterWeight" type="number" min="1" max="15" step="0.5" />
@@ -124,7 +130,7 @@ useHead({
           </tr>
         </thead>
         <tbody>
-          <tr v-for="r in waterRows" :key="r.w">
+          <tr v-for="r in waterRows" :key="r.w" :class="{ hl: r.w === Math.round(waterWeight) }">
             <td>{{ r.w }} kg</td>
             <td><strong>{{ r.ml }} ml</strong></td>
           </tr>
@@ -149,7 +155,11 @@ useHead({
     </section>
 
     <!-- bcs assessment -->
-    <section v-if="toolId === 'bcs'" class="card">
+    <section v-if="toolId === 'bcs'" class="card widget">
+      <div class="widget-head">
+        <span class="widget-icon">{{ toolIcon[toolId] }}</span>
+        <span>{{ tk('tagline') }}</span>
+      </div>
       <div class="fld">
         <span>{{ tk('scoreLabel') }}</span>
         <div class="bcs-btns">
@@ -157,7 +167,7 @@ useHead({
             v-for="n in 9"
             :key="n"
             type="button"
-            :class="{ active: bcsScore === n }"
+            :class="[bcsBtnClass(n), { active: bcsScore === n }]"
             @click="bcsScore = n"
           >
             {{ n }}
@@ -190,7 +200,7 @@ useHead({
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(d, i) in bcsDescs" :key="i">
+          <tr v-for="(d, i) in bcsDescs" :key="i" :class="{ hl: i + 1 === bcsScore }">
             <td>
               <strong>{{ i + 1 }}</strong>
             </td>
@@ -205,7 +215,11 @@ useHead({
     </section>
 
     <!-- age converter -->
-    <section v-if="toolId === 'age'" class="card">
+    <section v-if="toolId === 'age'" class="card widget">
+      <div class="widget-head">
+        <span class="widget-icon">{{ toolIcon[toolId] }}</span>
+        <span>{{ tk('tagline') }}</span>
+      </div>
       <label class="fld">
         <span>{{ tk('ageLabel') }}</span>
         <input v-model.number="catAge" type="number" min="0.5" max="25" step="0.5" />
@@ -221,7 +235,7 @@ useHead({
           </tr>
         </thead>
         <tbody>
-          <tr v-for="r in ageRows" :key="r.a">
+          <tr v-for="r in ageRows" :key="r.a" :class="{ hl: r.a === Math.round(catAge) }">
             <td>{{ r.a }}</td>
             <td><strong>{{ r.h }}</strong></td>
           </tr>
@@ -239,6 +253,13 @@ useHead({
       </ul>
       <h2>{{ tk('seniorTitle') }}</h2>
       <p>{{ tk('seniorBody') }}</p>
+    </section>
+
+    <!-- further reading: zh guide article (more locales as articles ship) -->
+    <section v-if="toolId === 'water' && locale === 'zh'" class="card read-more">
+      <h2>{{ t('readMore.title') }}</h2>
+      <p>{{ t('readMore.body') }}</p>
+      <RouterLink class="btn btn-outline" to="/zh/guides/water/">{{ t('readMore.btn') }}</RouterLink>
     </section>
 
     <section class="card">
@@ -295,9 +316,29 @@ h1 {
   padding: 20px;
   margin-bottom: 16px;
 }
+/* Interactive widget: tinted hero card so the tool stands out from article text. */
+.widget {
+  background: linear-gradient(180deg, #fff6ec 0%, var(--card-bg, #fff) 85%);
+  border: 1.5px solid #f0d9b8;
+  padding: 22px 20px;
+}
+.widget-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted, #8a7f72);
+  font-size: 0.92rem;
+  margin-bottom: 16px;
+}
+.widget-icon {
+  font-size: 1.35rem;
+}
 .card h2 {
   font-size: 1.15rem;
   margin: 18px 0 12px;
+  padding-left: 10px;
+  border-left: 4px solid var(--accent, #e07b39);
+  line-height: 1.4;
 }
 .card h2:first-child {
   margin-top: 0;
@@ -325,17 +366,27 @@ td.left {
   font-weight: 600;
 }
 .fld input {
-  width: 90px;
-  padding: 10px 12px;
-  font-size: 1rem;
-  border: 1px solid var(--card-border, #e8e2d9);
-  border-radius: 10px;
+  width: 110px;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  border: 1.5px solid var(--card-border, #e8e2d9);
+  border-radius: 12px;
+  color: inherit;
+  background: var(--card-bg, #fff);
+}
+.fld input:focus {
+  outline: none;
+  border-color: var(--accent, #e07b39);
+  box-shadow: 0 0 0 3px rgba(224, 123, 57, 0.15);
 }
 .big-result {
-  font-size: 1.6rem;
+  font-size: 1.9rem;
   font-weight: 800;
   color: var(--accent, #e07b39);
-  margin: 12px 0 4px;
+  margin: 14px 0 6px;
+  letter-spacing: 0.01em;
 }
 .note {
   color: var(--muted, #8a7f72);
@@ -357,6 +408,14 @@ td.left {
   font-size: 0.85rem;
   color: var(--muted, #8a7f72);
 }
+/* Highlight the table row matching the current input. */
+.data-table tr.hl td {
+  background: #fdf1e2;
+  font-weight: 700;
+}
+.data-table tr.hl td strong {
+  color: var(--accent, #e07b39);
+}
 .bcs-btns {
   display: flex;
   gap: 6px;
@@ -366,15 +425,45 @@ td.left {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  border: 1px solid var(--card-border, #e8e2d9);
+  border: 1.5px solid var(--card-border, #e8e2d9);
   background: var(--card-bg, #fff);
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.08s ease, background 0.15s ease;
 }
-.bcs-btns button.active {
-  background: var(--accent, #e07b39);
-  border-color: var(--accent, #e07b39);
+.bcs-btns button:hover {
+  transform: translateY(-1px);
+}
+/* Color-coded by category: 1–3 underweight (blue), 4–5 ideal (green), 6–9 overweight (warm). */
+.bcs-btns button.low {
+  background: #eaf3fd;
+  border-color: #b9d4f2;
+  color: #2f6fb3;
+}
+.bcs-btns button.ideal {
+  background: #ecf8f0;
+  border-color: #aeddbd;
+  color: #1f7a4d;
+}
+.bcs-btns button.high {
+  background: #fdf0e8;
+  border-color: #f0c4a3;
+  color: #b3541f;
+}
+.bcs-btns button.low.active {
+  background: #2f6fb3;
+  border-color: #2f6fb3;
+  color: #fff;
+}
+.bcs-btns button.ideal.active {
+  background: #1f7a4d;
+  border-color: #1f7a4d;
+  color: #fff;
+}
+.bcs-btns button.high.active {
+  background: #b3541f;
+  border-color: #b3541f;
   color: #fff;
 }
 .ideal-row {
@@ -387,13 +476,23 @@ td.left {
   gap: 12px;
   font-weight: 600;
 }
+.faq-item {
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--card-border, #e8e2d9);
+}
+.faq-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
 .faq-item h3 {
-  font-size: 1rem;
-  margin: 14px 0 6px;
+  font-size: 1.02rem;
+  margin: 2px 0 6px;
+  line-height: 1.5;
 }
 .faq-item p {
   margin: 0 0 4px;
-  line-height: 1.6;
+  line-height: 1.7;
+  color: #5b554d;
 }
 .disclaimer {
   font-size: 0.85rem;
@@ -413,5 +512,10 @@ td.left {
   color: #fff;
   font-weight: 700;
   text-decoration: none;
+}
+.btn-outline {
+  background: transparent;
+  color: var(--accent, #e07b39);
+  border: 1.5px solid var(--accent, #e07b39);
 }
 </style>

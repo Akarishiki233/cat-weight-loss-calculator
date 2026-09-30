@@ -8,23 +8,12 @@ import CustomSelect from '../components/CustomSelect.vue'
 import FoodSearch from '../components/FoodSearch.vue'
 import FaqSection from '../components/FaqSection.vue'
 import FeedbackForm from '../components/FeedbackForm.vue'
-import { calculate, toKg, fromKg, localeFromPath, foodDbFor, foodBrand, foodProduct } from '../lib/calc.js'
-import { foodPagePath } from '../lib/food-pages.js'
+import { calculate, toKg, fromKg, localeFromPath } from '../lib/calc.js'
 import { TOOL_IDS, toolI18nKey, toolPagePath } from '../lib/tool-pages.js'
-import foodsData from '../data/cat-foods.json'
 
 const { t, tm } = useI18n()
 const route = useRoute()
 const locale = computed(() => localeFromPath(route.path))
-const isZh = computed(() => locale.value === 'zh')
-
-/* Feeding-guide pages for internal linking (locale-filtered by market). */
-const foodLinks = computed(() =>
-  foodDbFor(locale.value, foodsData.foods).map((f) => ({
-    name: `${foodBrand(f, isZh.value)} ${foodProduct(f, isZh.value)}`,
-    path: foodPagePath(locale.value, f.id),
-  })),
-)
 
 /* Calculator-matrix tool pages for internal linking. */
 const toolsLinks = computed(() =>
@@ -314,16 +303,6 @@ const tipText = computed(() =>
     </div>
   </section>
 
-  <section v-reveal class="more-foods">
-    <h2>{{ t('food.moreTitle') }}</h2>
-    <p class="sub">{{ t('food.moreSub') }}</p>
-    <div class="chips">
-      <RouterLink v-for="f in foodLinks" :key="f.path" :to="f.path" class="chip">
-        {{ f.name }}
-      </RouterLink>
-    </div>
-  </section>
-
   <FeedbackForm />
 
   <div v-reveal class="disclaimer" v-html="t('disclaimer')"></div>
@@ -346,25 +325,6 @@ const tipText = computed(() =>
   color: var(--muted, #8a7f72);
   font-size: 0.92rem;
   margin: 0 0 14px;
-}
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.chip {
-  display: inline-block;
-  padding: 8px 14px;
-  border: 1px solid var(--card-border, #e8e2d9);
-  border-radius: 999px;
-  font-size: 0.88rem;
-  color: inherit;
-  text-decoration: none;
-  background: var(--card-bg, #fff);
-}
-.chip:hover {
-  border-color: var(--accent, #e07b39);
-  color: var(--accent, #e07b39);
 }
 .tool-cards {
   display: grid;

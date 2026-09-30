@@ -113,7 +113,7 @@ print('== 3. dist static files ==')
 for f in ['sitemap.xml', 'robots.txt', '404.html', 'google0caa8c740c641dd9.html', 'data/cat-foods.json']:
     check(f'dist/{f} exists', (DIST / f).exists())
 sm = (DIST / 'sitemap.xml').read_text() if (DIST / 'sitemap.xml').exists() else ''
-check('sitemap has 135 urls (4 mains + 119 food pages + 12 tool pages)', sm.count('<loc>') == 135, f'found {sm.count("<loc>")}')
+check('sitemap has 136 urls (4 mains + 119 food pages + 12 tool pages + 1 article)', sm.count('<loc>') == 136, f'found {sm.count("<loc>")}')
 
 print('== 4. i18n integrity ==')
 for loc in ['en', 'zh', 'ja', 'ko']:
@@ -248,26 +248,36 @@ for loc in ['en', 'ja', 'ko']:
 
 # sitemap covers all food pages + 4 mains.
 sm = (ROOT / 'public/sitemap.xml').read_text(encoding='utf-8')
-check('sitemap 135 urls', sm.count('<url>') == 135, f'got {sm.count("<url>")}')
+check('sitemap 136 urls', sm.count('<url>') == 136, f'got {sm.count("<url>")}')
 check('sitemap has food urls', all(f'<loc>{SITE}{p["path"]}</loc>' in sm for p in pages))
 
 # i18n food-key parity across locales.
 FOOD_KEYS = ['title', 'metaDesc', 'kcalLabel', 'perKg', 'note', 'tableTitle', 'thWeight',
              'thMaintain', 'thLose', 'methodTitle', 'methodBody', 'faqTitle', 'faq1q',
              'faq1a', 'faq2q', 'faq2a', 'disclaimer', 'ctaTitle', 'ctaBody', 'ctaBtn',
-             'moreTitle', 'moreSub']
+             'relatedTitle']
 for loc in ['en', 'zh', 'ja', 'ko']:
     src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
     m = re.search(r'food:\s*\{(.*?)\n  \}\n\}', src, re.S)
     missing_keys = [k for k in FOOD_KEYS if not m or f'{k}:' not in m.group(1)]
     check(f'{loc}.js: food keys complete', not missing_keys, f'missing {missing_keys}' if missing_keys else '')
 
-# Calculator page links to its locale's food pages (internal link equity).
-for loc, path, expect_n in [('en', 'index.html', 28), ('zh', 'zh/index.html', 35),
-                            ('ja', 'ja/index.html', 28), ('ko', 'ko/index.html', 28)]:
-    html = (DIST / path).read_text(encoding='utf-8')
+# Each food page links to 4 related feeding guides (same market, same brand first).
+# This replaced the old homepage chip cloud (removed 2026-09-30: too noisy, nobody clicked).
+n_related_ok = 0
+for p in pages:
+    html = (DIST / (p['path'].lstrip('/') + 'index.html')).read_text(encoding='utf-8')
     n = html.count('/foods/')
-    check(f'{loc} calculator links {expect_n} food pages', n >= expect_n, f'got {n} /foods/ refs')
+    # canonical (/foods/ in <link>) + 4 related links
+    if n >= 5:
+        n_related_ok += 1
+check('all food pages have 4 related links', n_related_ok == len(pages),
+      f'{n_related_ok}/{len(pages)}')
+# Homepage no longer renders the food chip cloud.
+for loc, path in [('en', 'index.html'), ('zh', 'zh/index.html'),
+                  ('ja', 'ja/index.html'), ('ko', 'ko/index.html')]:
+    html = (DIST / path).read_text(encoding='utf-8')
+    check(f'{loc} calculator has no chip cloud', 'class="chip' not in html)
 
 print('== 8. tool pages (water/bcs/age × 4 locales = 12) ==')
 TOOL_IDS = ['water', 'bcs', 'age']
@@ -314,6 +324,10 @@ for tid in TOOL_IDS:
             check(f'{p}: intro found in i18n', False)
         check(f'{p}: FAQ has 4 questions', html.count('"@type": "Question"') == 4)
         check(f'{p}: CTA button', '🐾' in html)
+        # Visual polish: hero widget card, icon header, current-value row highlight.
+        check(f'{p}: widget hero card', 'card widget' in html)
+        check(f'{p}: widget icon header', 'widget-icon' in html)
+        check(f'{p}: current-value row highlighted', 'class="hl"' in html)
         if tid == 'water':
             check(f'{p}: default 4.5kg → 225 ml', '225' in html and ('ml' in html or '毫升' in html))
             check(f'{p}: table has 4kg → 200 ml row', '200' in html)
@@ -331,6 +345,8 @@ for tid in TOOL_IDS:
                                                   'ja': '9段階BCSチャート', 'ko': '9단계 BCS 차트'}[loc] in html)
             check(f'{p}: overweight guidance', {'en': 'hepatic lipidosis', 'zh': '脂肪肝',
                                                 'ja': '肝リピドーシス', 'ko': '리피도시스'}[loc] in html)
+            check(f'{p}: color-coded score buttons',
+                  'class="low' in html and 'class="ideal' in html and 'class="high' in html)
         elif tid == 'age':
             check(f'{p}: default 5yr → 36 human years', '>36<' in html or ' 36 ' in html or '36' in html)
             check(f'{p}: 20-year chart row', '>20<' in html or '<td>20</td>' in html)
@@ -380,7 +396,38 @@ for loc, path in [('en', 'index.html'), ('zh', 'zh/index.html'),
     for tid in TOOL_IDS:
         check(f'{loc} calculator links tool {tid}', f'/{tid}/' in html)
 
-print('== 9. router scroll behavior ==')
+print('== 10. guide articles (zh-first) ==')
+ARTICLE_PAGES = [('zh', 'water', '/zh/guides/water/')]
+for loc, aid, p in ARTICLE_PAGES:
+    fp = DIST / (p.lstrip('/') + 'index.html')
+    check(f'article exists: {p}', fp.exists())
+    if not fp.exists():
+        continue
+    html = fp.read_text(encoding='utf-8')
+    check(f'{p}: title', '猫咪饮水完全指南' in html)
+    check(f'{p}: meta description', '50ml/kg' in html)
+    check(f'{p}: canonical', f'href="{SITE}{p}"' in html)
+    check(f'{p}: Article JSON-LD', '"@type":"Article"' in html or '"@type": "Article"' in html)
+    check(f'{p}: BreadcrumbList JSON-LD', 'BreadcrumbList' in html)
+    n_q = html.count('"@type": "Question"') + html.count('"@type":"Question"')
+    check(f'{p}: FAQ has 4 questions', n_q == 4, f'got {n_q}')
+    check(f'{p}: 5 content sections', html.count('class="card"') >= 7)  # 5 sections + faq + sources (+ cta uses "card cta")
+    check(f'{p}: links to water tool', '/zh/water/' in html)
+    check(f'{p}: sources cite Cornell', 'vet.cornell.edu' in html)
+    check(f'{p}: disclaimer', '不能替代兽医诊断' in html)
+# zh water tool page links out to the guide (interlinking).
+html = (DIST / 'zh/water/index.html').read_text(encoding='utf-8')
+check('zh water tool links to guide', '/zh/guides/water/' in html)
+check('zh water tool has read-more card', '延伸阅读' in html)
+# Other locales must NOT render the read-more card (article is zh-only for now).
+for loc, wpath in [('en', 'water/index.html'), ('ja', 'ja/water/index.html'),
+                   ('ko', 'ko/water/index.html')]:
+    h = (DIST / wpath).read_text(encoding='utf-8')
+    check(f'{loc} water tool has no read-more card', 'read-more' not in h)
+# sitemap covers the article.
+check('sitemap has article url', f'<loc>{SITE}/zh/guides/water/</loc>' in sm)
+
+print('== 11. router scroll behavior ==')
 main_js = (ROOT / 'src/main.js').read_text(encoding='utf-8')
 check('scrollBehavior defined', 'scrollBehavior' in main_js)
 check('scrollBehavior returns top 0', re.search(r'scrollBehavior\(.*?\{.*?top:\s*0', main_js, re.S) is not None)

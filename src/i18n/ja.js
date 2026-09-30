@@ -87,8 +87,7 @@ export default {
     ctaTitle: "愛猫の条件が違う場合は？",
     ctaBody: "フル計算機で体重・年齢・運動量・目標を入力して、専用の目安を計算しましょう。",
     ctaBtn: "計算機を開く 🐾",
-    moreTitle: "各フードの1日の給与量",
-    moreSub: "実測カロリーデータに基づく人気キャットフードの給与量ガイド。"
+    relatedTitle: "関連する給与量ガイド",
   },
   tools: {
     title: "その他の猫ツール",

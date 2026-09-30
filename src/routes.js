@@ -1,8 +1,10 @@
 import Calculator from './pages/Calculator.vue'
 import FoodPage from './pages/FoodPage.vue'
 import ToolPage from './pages/ToolPage.vue'
+import ArticlePage from './pages/ArticlePage.vue'
 import { allFoodPages } from './lib/food-pages.js'
 import { allToolPages } from './lib/tool-pages.js'
+import { allArticlePages } from './lib/article-pages.js'
 import foodsData from './data/cat-foods.json'
 
 // Four locale homepages + one programmatic "how much to feed" page per
@@ -22,6 +24,10 @@ for (const p of allFoodPages(foodsData.foods)) {
 
 for (const p of allToolPages()) {
   routes.push({ path: p.path, component: ToolPage, props: { toolId: p.id } })
+}
+
+for (const p of allArticlePages()) {
+  routes.push({ path: p.path, component: ArticlePage, props: { articleId: p.id } })
 }
 
 export default routes

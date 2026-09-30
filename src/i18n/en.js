@@ -87,8 +87,7 @@ export default {
     ctaTitle: "Your cat is different?",
     ctaBody: "Use the full calculator with your cat's weight, age, activity level and goal.",
     ctaBtn: "Open the calculator 🐾",
-    moreTitle: "How much of each food per day?",
-    moreSub: "Feeding guides for popular cat foods, based on real calorie data."
+    relatedTitle: "Related feeding guides",
   },
   tools: {
     title: "More cat tools",

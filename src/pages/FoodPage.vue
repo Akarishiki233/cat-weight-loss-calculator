@@ -37,6 +37,19 @@ const rows = computed(() => {
 })
 const row4 = computed(() => rows.value.find((r) => r.w === 4))
 
+// Related feeding guides: same market (so the page exists in this locale),
+// same brand first, excluding self. Keeps internal link equity after the
+// homepage chip cloud was removed.
+const relatedFoods = computed(() => {
+  const f = food.value
+  const sameMarket = foodsData.foods.filter((o) => o.market === f.market && o.id !== f.id)
+  sameMarket.sort((a, b) => (b.brand === f.brand) - (a.brand === f.brand))
+  return sameMarket.slice(0, 4).map((o) => ({
+    name: `${foodBrand(o, isZh.value)} ${foodProduct(o, isZh.value)}`,
+    path: foodPagePath(locale.value, o.id),
+  }))
+})
+
 const faqItems = computed(() => [
   {
     q: t('food.faq1q', { name: name.value }),
@@ -147,6 +160,15 @@ useHead({
 
     <p class="disclaimer">{{ t('food.disclaimer') }}</p>
 
+    <section class="card">
+      <h2>{{ t('food.relatedTitle') }}</h2>
+      <ul class="related">
+        <li v-for="r in relatedFoods" :key="r.path">
+          <RouterLink :to="r.path">{{ r.name }}</RouterLink>
+        </li>
+      </ul>
+    </section>
+
     <section class="card cta">
       <h2>{{ t('food.ctaTitle') }}</h2>
       <p>{{ t('food.ctaBody') }}</p>
@@ -224,6 +246,27 @@ h1 {
   color: var(--muted, #8a7f72);
   line-height: 1.6;
   margin: 4px 2px 20px;
+}
+.related {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.related li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--card-border, #e8e2d9);
+}
+.related li:last-child {
+  border-bottom: none;
+}
+.related a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+}
+.related a:hover {
+  color: var(--accent, #e07b39);
+  text-decoration: underline;
 }
 .cta {
   text-align: center;

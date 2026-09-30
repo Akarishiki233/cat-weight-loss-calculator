@@ -87,8 +87,7 @@ export default {
     ctaTitle: "우리 고양이 조건이 다르다면?",
     ctaBody: "전체 계산기에서 체중·나이·활동량·목표를 입력하고 맞춤 가이드를 확인하세요.",
     ctaBtn: "계산기 열기 🐾",
-    moreTitle: "사료별 하루 급여량",
-    moreSub: "실제 열량 데이터 기반 인기 고양이 사료 급여량 가이드."
+    relatedTitle: "관련 급여량 가이드",
   },
   tools: {
     title: "더 많은 고양이 도구",
