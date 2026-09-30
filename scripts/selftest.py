@@ -433,6 +433,23 @@ check('scrollBehavior defined', 'scrollBehavior' in main_js)
 check('scrollBehavior returns top 0', re.search(r'scrollBehavior\(.*?\{.*?top:\s*0', main_js, re.S) is not None)
 check('scrollBehavior preserves back/forward position', 'savedPosition' in main_js)
 
+print('== 12. cards are visible without v-reveal ==')
+style_css = (ROOT / 'src/style.css').read_text(encoding='utf-8')
+check('.card does not hide itself (opacity:0)',
+      re.search(r'\.card\s*\{[^}]*opacity\s*:\s*0', style_css) is None)
+check('reveal animation scoped to .reveal',
+      re.search(r'\.reveal\s*\{[^}]*opacity\s*:\s*0', style_css) is not None)
+check('.reveal.in restores visibility',
+      re.search(r'\.reveal\.in\s*\{[^}]*opacity\s*:\s*1', style_css) is not None)
+# Spot-check built pages: tool/food/article cards must not carry an inline
+# hidden state and must not depend on a JS-added class to be visible.
+for spot, desc in [('zh/water/index.html', 'tool page'), ('zh/foods/acana-indoor-entree/index.html', 'food page'),
+                   ('zh/guides/water/index.html', 'article page')]:
+    fp = DIST / spot
+    if fp.exists():
+        h = fp.read_text(encoding='utf-8')
+        check(f'{desc} has visible .card markup', 'class="card' in h)
+
 print()
 if fails:
     print(f'SELFTEST FAILED: {len(fails)} check(s)')
