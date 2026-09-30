@@ -7,6 +7,7 @@ import SegControl from '../components/SegControl.vue'
 import CustomSelect from '../components/CustomSelect.vue'
 import FoodSearch from '../components/FoodSearch.vue'
 import FaqSection from '../components/FaqSection.vue'
+import FeedbackForm from '../components/FeedbackForm.vue'
 import { calculate, toKg, fromKg, localeFromPath } from '../lib/calc.js'
 
 const { t, tm } = useI18n()
@@ -281,6 +282,8 @@ const tipText = computed(() =>
   </div>
 
   <FaqSection />
+
+  <FeedbackForm />
 
   <div v-reveal class="disclaimer" v-html="t('disclaimer')"></div>
 

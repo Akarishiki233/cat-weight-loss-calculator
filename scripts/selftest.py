@@ -28,6 +28,10 @@ def run(cmd):
 print('== 1. build ==')
 r = run(['npm', 'run', 'build'])
 check('vite-ssg build exits 0', r.returncode == 0, r.stderr[-500:] if r.returncode else '')
+# vue-i18n treats `@` as linked-message syntax with no escape hatch: a raw
+# `@` in any message breaks compilation and can silently drop SSR output.
+# The build exits 0 anyway, so assert on stderr explicitly.
+check('build: no i18n message-compiler errors', 'message-compiler' not in r.stderr)
 if r.returncode != 0:
     print('\nSELFTEST FAILED (build)')
     sys.exit(1)
@@ -35,19 +39,19 @@ if r.returncode != 0:
 LOCALES = {
     'en': {'path': 'index.html', 'lang': 'en', 'canon': '/',
            'title_kw': 'Cat Calorie Calculator', 'faq_kw': 'How many calories does a cat need per day?',
-           'breed_ph': 'Mixed breed', 'calc_btn': 'Calculate daily feeding',
+           'breed_ph': 'Mixed breed', 'calc_btn': 'Calculate daily feeding', 'fb_btn': 'Send feedback',
            'labels': ['Life stage', 'Neutered / spayed?', 'Activity level <small>— be honest 😺</small>', 'Goal', 'Food calorie density <small>— kcal/kg</small>']},
     'zh': {'path': 'zh/index.html', 'lang': 'zh-CN', 'canon': '/zh/',
            'title_kw': '猫咪热量计算器', 'faq_kw': '猫咪每天需要多少热量？',
-           'breed_ph': '混种猫', 'calc_btn': '计算每日喂食量',
+           'breed_ph': '混种猫', 'calc_btn': '计算每日喂食量', 'fb_btn': '发送留言',
            'labels': ['年龄阶段', '是否绝育？', '活动量 <small>— 诚实一点 😺</small>', '目标', '猫粮热量密度 <small>— kcal/kg</small>']},
     'ja': {'path': 'ja/index.html', 'lang': 'ja', 'canon': '/ja/',
            'title_kw': '猫', 'faq_kw': '猫は1日に何カロリー必要？',
-           'breed_ph': 'ミックス', 'calc_btn': '計算',
+           'breed_ph': 'ミックス', 'calc_btn': '計算', 'fb_btn': '送信する',
            'labels': ['ライフステージ', '避妊・去勢済み？', '運動量 <small>— 正直に 😺</small>', '目標', 'フードのカロリー密度 <small>— kcal/kg</small>']},
     'ko': {'path': 'ko/index.html', 'lang': 'ko', 'canon': '/ko/',
            'title_kw': '고양이', 'faq_kw': '고양이에게',
-           'breed_ph': '믹스', 'calc_btn': '계산',
+           'breed_ph': '믹스', 'calc_btn': '계산', 'fb_btn': '보내기',
            'labels': ['생애 단계', '중성화 수술 여부', '활동량 <small>— 솔직하게 😺</small>', '목표', '사료 칼로리 밀도 <small>— kcal/kg</small>']},
 }
 SITE = 'https://akarishiki233.github.io/test-for-muse'
@@ -100,6 +104,9 @@ for loc, cfg in LOCALES.items():
         check(f'{loc}: label "{lb[:12]}..." exactly once', n == 1, f'found {n}')
     # density block spacing hooks exist
     check(f'{loc}: density-block spacing', 'density-block' in s)
+    # feedback form (FormSubmit -> owner inbox) renders in every locale
+    check(f'{loc}: feedback form renders', 'feedback-form' in s and '<textarea' in s)
+    check(f'{loc}: feedback submit btn', cfg['fb_btn'] in s)
 
 print('== 3. dist static files ==')
 for f in ['sitemap.xml', 'robots.txt', '404.html', 'google0caa8c740c641dd9.html', 'data/cat-foods.json']:
@@ -133,6 +140,34 @@ for vue in sorted((ROOT / 'src').rglob('*.vue')):
             check(f'{vue.name}:{ln} bare tm() snapshot in setup (wrap in computed)',
                   False, line.strip()[:80])
 check('no bare tm() snapshots in <script setup>', True)
+
+print('== 4c. feedback form ==')
+# FeedbackForm posts to FormSubmit which forwards to the owner's inbox.
+# Guard: all locales carry the full key set, and the endpoint with the
+# correct inbox is actually bundled into dist JS.
+FB_KEYS = ['title', 'desc', 'name', 'namePh', 'email', 'emailPh', 'message',
+           'messagePh', 'submit', 'sending', 'success', 'error']
+for loc in ['en', 'zh', 'ja', 'ko']:
+    src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
+    m = re.search(r'feedback:\s*\{(.*?)\},', src, re.S)
+    missing = [k for k in FB_KEYS if not m or f'{k}:' not in m.group(1)]
+    check(f'{loc}.js: feedback keys complete', not missing,
+          f'missing {missing}' if missing else '')
+js_blobs = ' '.join(p.read_text(encoding='utf-8', errors='ignore')
+                    for p in (DIST / 'assets').glob('*.js'))
+check('formsubmit endpoint bundled', 'formsubmit.co/ajax/akrishiki4869@gmail.com' in js_blobs)
+check('feedback honeypot present', '_honey' in js_blobs)
+
+print('== 4d. i18n message syntax ==')
+# Regression guard (2026-09-30, feedback form): a raw ASCII `@` in any i18n
+# message makes vue-i18n's message compiler throw INVALID_LINKED_FORMAT,
+# which silently dropped the whole <form> from SSR output while the build
+# still exited 0. We use no linked messages, so any `@` in these files is a bug
+# (use fullwidth ＠ for email examples).
+for loc in ['en', 'zh', 'ja', 'ko']:
+    src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
+    bad = [ln.strip()[:70] for ln in src.splitlines() if '@' in ln]
+    check(f'{loc}.js: no raw @ in messages', not bad, f'{bad[:2]}' if bad else '')
 
 print('== 5. cat food data ==')
 data = json.loads((ROOT / 'src/data/cat-foods.json').read_text(encoding='utf-8'))

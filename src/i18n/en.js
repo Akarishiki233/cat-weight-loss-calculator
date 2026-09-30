@@ -55,6 +55,14 @@ export default {
     { q: "How can I help my cat lose weight safely?", a: "Start with a vet check — your vet can confirm an ideal weight and rule out medical causes. Then follow this plan:<br><br><strong>An 8-week safe weight-loss plan:</strong><br><strong>Week 1 – Baseline.</strong> Weigh your cat on the same scale at the same time of day, and measure everything it eats for 3–7 days, treats included.<br><strong>Weeks 2–3 – Transition.</strong> Switch to 2–3 measured meals a day (no free-feeding) and gradually cut down to 80% of the resting energy requirement for its current weight — the calculator\u2019s \u201cLose weight\u201d mode does this math. Keep treats under 10% of daily calories.<br><strong>Weeks 4–8 – Monitor.</strong> Weigh weekly and aim for 0.5–2% body-weight loss per week. Add two 10–15 minute play sessions a day.<br><strong>Adjust.</strong> No loss after 4 weeks? Cut another 10% (ask your vet first). Losing too fast? Add food back.<br><strong>Maintain.</strong> At the ideal weight, switch back to maintenance calories and keep the measuring habit.<br><br>\u26a0\ufe0f Rapid weight loss can cause fatty liver disease in cats. If your cat stops eating for more than 24–48 hours, see a vet immediately." },
     { q: "What is RER in cat nutrition?", a: "RER (Resting Energy Requirement) = 70 × (body weight in kg)<sup>0.75</sup>. It's the baseline vets use; daily needs (DER) are RER multiplied by a factor for life stage and activity (e.g. 1.2–1.4 for a neutered indoor adult cat)." },
     ] },
+  feedback: { title: "Have an idea? 💡",
+    desc: "Want us to cover a topic, add a cat food, or fix something? Send us a note — we read everything.",
+    name: "Name", namePh: "Your name (optional)",
+    email: "Email", emailPh: "you＠example.com (optional)",
+    message: "Message", messagePh: "Tell us your idea, or what you'd like us to add…",
+    submit: "Send feedback 📮", sending: "Sending…",
+    success: "Thanks! Your message is on its way. 🐾",
+    error: "Hmm, that didn't send. Please try again in a moment." },
   disclaimer: "<b>Disclaimer:</b> This calculator gives an estimate based on standard veterinary formulas (RER/DER). Every cat is different — metabolism, breed and health conditions matter. Adjust based on weight trends and <b>consult your veterinarian</b>, especially for weight loss, kittens, or cats with medical conditions.",
   footer: "Made for cats everywhere · v2.0"
 }
