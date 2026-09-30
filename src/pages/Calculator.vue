@@ -16,7 +16,7 @@ const locale = computed(() => localeFromPath(route.path))
 const isZh = computed(() => locale.value === 'zh')
 
 /* ---------------- SEO head (per locale, prerendered by vite-ssg) ---------------- */
-const SITE = 'https://akarishiki233.github.io/test-for-muse'
+const SITE = 'https://akarishiki233.github.io/cat-weight-loss-calculator'
 const pathFor = (l) => (l === 'en' ? '/' : `/${l}/`)
 const stripHtml = (s) =>
   String(s)

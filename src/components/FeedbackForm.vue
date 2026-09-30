@@ -4,10 +4,16 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-// FormSubmit AJAX endpoint — submissions land directly in the owner's inbox.
-// First-ever submission triggers an activation email; the owner clicks once,
-// then all later messages arrive normally. No backend of our own needed.
-const ENDPOINT = 'https://formsubmit.co/ajax/akrishiki4869@gmail.com'
+// Web3Forms: free form-to-email API, no backend needed.
+// Signup (free, ~1 min) at https://web3forms.com with the owner's email,
+// then paste the access key below. The key is public-safe (it's an alias
+// for the inbox, per Web3Forms FAQ) — but the raw email stays hidden,
+// unlike FormSubmit which exposed it in the endpoint URL.
+const ENDPOINT = 'https://api.web3forms.com/submit'
+// TODO(jay): replace with the real key from web3forms.com
+const ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+// Shown only as a last-resort fallback when the API is unreachable.
+const CONTACT_EMAIL = 'akrishiki4869@gmail.com'
 
 const name = ref('')
 const email = ref('')
@@ -23,15 +29,17 @@ async function submit() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify({
+        access_key: ACCESS_KEY,
         name: name.value.trim(),
         email: email.value.trim(),
         message: message.value.trim(),
-        _honey: honey.value,
-        _subject: '🐾 Cat calculator feedback',
-        _template: 'table',
+        subject: '🐾 Cat calculator feedback',
+        from_name: 'Cat Calorie Calculator',
+        botcheck: honey.value, // honeypot: bots fill it, humans never see it
       }),
     })
-    if (res.ok) {
+    const data = await res.json().catch(() => ({}))
+    if (res.ok && data.success) {
       status.value = 'success'
       name.value = ''
       email.value = ''
@@ -65,11 +73,14 @@ async function submit() {
         <textarea v-model="message" rows="4" required :placeholder="t('feedback.messagePh')"></textarea>
       </div>
       <!-- honeypot: invisible to humans -->
-      <input v-model="honey" type="text" name="_honey" class="fb-honey" tabindex="-1" autocomplete="off" />
+      <input v-model="honey" type="text" name="botcheck" class="fb-honey" tabindex="-1" autocomplete="off" />
       <button class="fb-send" type="submit" :disabled="status === 'sending' || !message.trim()">
         {{ status === 'sending' ? t('feedback.sending') : t('feedback.submit') }}
       </button>
-      <p v-if="status === 'error'" class="fb-error">{{ t('feedback.error') }}</p>
+      <p v-if="status === 'error'" class="fb-error">
+        {{ t('feedback.error') }}<br />
+        <a :href="'mailto:' + CONTACT_EMAIL">{{ t('feedback.fallback') }}</a>
+      </p>
     </form>
     <p v-else class="fb-success">{{ t('feedback.success') }}</p>
   </div>

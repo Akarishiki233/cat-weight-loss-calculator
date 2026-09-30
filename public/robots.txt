@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://akarishiki233.github.io/test-for-muse/sitemap.xml
+Sitemap: https://akarishiki233.github.io/cat-weight-loss-calculator/sitemap.xml

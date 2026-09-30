@@ -62,7 +62,8 @@ export default {
     message: "Message", messagePh: "Tell us your idea, or what you'd like us to add…",
     submit: "Send feedback 📮", sending: "Sending…",
     success: "Thanks! Your message is on its way. 🐾",
-    error: "Hmm, that didn't send. Please try again in a moment." },
+    error: "Hmm, that didn't send. Please try again in a moment.",
+    fallback: "Still not working? Email us directly →" },
   disclaimer: "<b>Disclaimer:</b> This calculator gives an estimate based on standard veterinary formulas (RER/DER). Every cat is different — metabolism, breed and health conditions matter. Adjust based on weight trends and <b>consult your veterinarian</b>, especially for weight loss, kittens, or cats with medical conditions.",
   footer: "Made for cats everywhere · v2.0"
 }

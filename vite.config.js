@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/test-for-muse/',
+  base: '/cat-weight-loss-calculator/',
   ssgOptions: {
     formatting: 'prettify',
     crittersOptions: false,

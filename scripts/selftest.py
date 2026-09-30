@@ -54,7 +54,7 @@ LOCALES = {
            'breed_ph': '믹스', 'calc_btn': '계산', 'fb_btn': '보내기',
            'labels': ['생애 단계', '중성화 수술 여부', '활동량 <small>— 솔직하게 😺</small>', '목표', '사료 칼로리 밀도 <small>— kcal/kg</small>']},
 }
-SITE = 'https://akarishiki233.github.io/test-for-muse'
+SITE = 'https://akarishiki233.github.io/cat-weight-loss-calculator'
 
 print('== 2. per-locale HTML ==')
 for loc, cfg in LOCALES.items():
@@ -146,7 +146,7 @@ print('== 4c. feedback form ==')
 # Guard: all locales carry the full key set, and the endpoint with the
 # correct inbox is actually bundled into dist JS.
 FB_KEYS = ['title', 'desc', 'name', 'namePh', 'email', 'emailPh', 'message',
-           'messagePh', 'submit', 'sending', 'success', 'error']
+           'messagePh', 'submit', 'sending', 'success', 'error', 'fallback']
 for loc in ['en', 'zh', 'ja', 'ko']:
     src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
     m = re.search(r'feedback:\s*\{(.*?)\},', src, re.S)
@@ -155,8 +155,13 @@ for loc in ['en', 'zh', 'ja', 'ko']:
           f'missing {missing}' if missing else '')
 js_blobs = ' '.join(p.read_text(encoding='utf-8', errors='ignore')
                     for p in (DIST / 'assets').glob('*.js'))
-check('formsubmit endpoint bundled', 'formsubmit.co/ajax/akrishiki4869@gmail.com' in js_blobs)
-check('feedback honeypot present', '_honey' in js_blobs)
+check('web3forms endpoint bundled', 'api.web3forms.com/submit' in js_blobs)
+check('feedback honeypot present', 'botcheck' in js_blobs)
+# The access key comes from the owner's free web3forms.com signup; the
+# placeholder must be replaced before push, or every submission fails.
+check('web3forms access key configured',
+      'api.web3forms.com/submit' in js_blobs
+      and 'YOUR_WEB3FORMS_ACCESS_KEY' not in js_blobs)
 
 print('== 4d. i18n message syntax ==')
 # Regression guard (2026-09-30, feedback form): a raw ASCII `@` in any i18n

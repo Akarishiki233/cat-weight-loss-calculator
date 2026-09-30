@@ -11,7 +11,7 @@ import './style.css'
 
 export const createApp = ViteSSG(
   App,
-  { routes, base: '/test-for-muse/' },
+  { routes, base: '/cat-weight-loss-calculator/' },
   ({ app, router, isClient }) => {
     const i18n = createI18n({
       legacy: false,
