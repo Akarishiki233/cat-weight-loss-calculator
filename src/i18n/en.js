@@ -19,26 +19,26 @@ export default {
     ] },
   weight: { title: "Weight" },
   unit: { kg: "kg", alt: "lb", hint: "" },
-  lifestyleTitle: "Life stage &amp; lifestyle",
+  lifestyleTitle: "Life stage & lifestyle",
   lifeStage: { label: "Life stage", options: [
       { value: "kitten", emoji: "🍼", label: "Kitten", sub: "< 1 year" },
       { value: "adult", emoji: "🐈", label: "Adult", sub: "1 – 7 years" },
       { value: "senior", emoji: "🧶", label: "Senior", sub: "7+ years" },
     ] },
-  neuter: { label: "Life stage</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>Kitten<small>&lt; 1 year</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>Adult<small>1 – 7 years</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>Senior<small>7+ years</small></button> </div> <div id=\"neuterRow\"> <label>Neutered / spayed?", options: [
+  neuter: { label: "Neutered / spayed?", options: [
       { value: "yes", emoji: "", label: "Yes", sub: "" },
       { value: "no", emoji: "", label: "No", sub: "" },
     ] },
-  activity: { label: "Life stage</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>Kitten<small>&lt; 1 year</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>Adult<small>1 – 7 years</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>Senior<small>7+ years</small></button> </div> <div id=\"neuterRow\"> <label>Neutered / spayed?</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">Yes</button> <button type=\"button\" data-v=\"no\">No</button> </div> </div> <label>Activity level <small>— be honest 😺</small>", options: [
+  activity: { label: "Activity level <small>— be honest 😺</small>", options: [
       { value: "low", emoji: "🛋️", label: "Couch potato", sub: "barely moves" },
       { value: "mid", emoji: "🚶", label: "Normal", sub: "plays a little daily" },
       { value: "high", emoji: "🏃", label: "Zoomies", sub: "runs the house" },
     ] },
-  goal: { label: "Life stage</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>Kitten<small>&lt; 1 year</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>Adult<small>1 – 7 years</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>Senior<small>7+ years</small></button> </div> <div id=\"neuterRow\"> <label>Neutered / spayed?</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">Yes</button> <button type=\"button\" data-v=\"no\">No</button> </div> </div> <label>Activity level <small>— be honest 😺</small></label> <div class=\"seg c3\" id=\"actSeg\"> <button type=\"button\" data-v=\"low\"><span class=\"em\">🛋️</span>Couch potato<small>barely moves</small></button> <button type=\"button\" data-v=\"mid\" class=\"active\"><span class=\"em\">🚶</span>Normal<small>plays a little daily</small></button> <button type=\"button\" data-v=\"high\"><span class=\"em\">🏃</span>Zoomies<small>runs the house</small></button> </div> <label>Goal", options: [
+  goal: { label: "Goal", options: [
       { value: "maintain", emoji: "", label: "Maintain weight", sub: "" },
       { value: "lose", emoji: "", label: "Lose weight", sub: "" },
     ] },
-  density: { label: "Life stage</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>Kitten<small>&lt; 1 year</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>Adult<small>1 – 7 years</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>Senior<small>7+ years</small></button> </div> <div id=\"neuterRow\"> <label>Neutered / spayed?</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">Yes</button> <button type=\"button\" data-v=\"no\">No</button> </div> </div> <label>Activity level <small>— be honest 😺</small></label> <div class=\"seg c3\" id=\"actSeg\"> <button type=\"button\" data-v=\"low\"><span class=\"em\">🛋️</span>Couch potato<small>barely moves</small></button> <button type=\"button\" data-v=\"mid\" class=\"active\"><span class=\"em\">🚶</span>Normal<small>plays a little daily</small></button> <button type=\"button\" data-v=\"high\"><span class=\"em\">🏃</span>Zoomies<small>runs the house</small></button> </div> <label>Goal</label> <div class=\"seg c2\" id=\"goalSeg\"> <button type=\"button\" data-v=\"maintain\" class=\"active\">Maintain weight</button> <button type=\"button\" data-v=\"lose\">Lose weight</button> </div> <label>Food calorie density <small>— kcal/kg</small>", manual: "✍️ Enter manually", search: "🔍 Find my cat food",
+  density: { label: "Food calorie density <small>— kcal/kg</small>", manual: "✍️ Enter manually", search: "🔍 Find my cat food",
     manualHint: "Typical dry food ≈ 3600 kcal/kg · wet food ≈ 800–1200 kcal/kg — check the package", searchPlaceholder: "Search brand or product, e.g. Royal Canin" },
   foodDb: { loading: "Loading food database…", loaded: "Database: {n} foods · updated Sep 30, 2026 · type 2+ letters to search", failed: "Could not load the food database — please enter the value manually.", none: "No matches. Try the brand name in English, or enter the value manually.", clear: "Clear", disclaimer: "Calorie data is compiled from public sources (updated Sep 30, 2026) and may vary by region, batch or formula changes — always check your package. This tool gives estimates only and is not veterinary advice." },
   calcBtn: "Calculate daily feeding 🐾",

@@ -25,20 +25,20 @@ export default {
       { value: "adult", emoji: "🐈", label: "成猫", sub: "1 – 7歳" },
       { value: "senior", emoji: "🧶", label: "シニア", sub: "7歳以上" },
     ] },
-  neuter: { label: "ライフステージ</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>子猫<small>1歳未満</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>成猫<small>1 – 7歳</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>シニア<small>7歳以上</small></button> </div> <div id=\"neuterRow\"> <label>避妊・去勢済み？", options: [
+  neuter: { label: "避妊・去勢済み？", options: [
       { value: "yes", emoji: "", label: "はい", sub: "" },
       { value: "no", emoji: "", label: "いいえ", sub: "" },
     ] },
-  activity: { label: "ライフステージ</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>子猫<small>1歳未満</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>成猫<small>1 – 7歳</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>シニア<small>7歳以上</small></button> </div> <div id=\"neuterRow\"> <label>避妊・去勢済み？</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">はい</button> <button type=\"button\" data-v=\"no\">いいえ</button> </div> </div> <label>運動量 <small>— 正直に 😺</small>", options: [
+  activity: { label: "運動量 <small>— 正直に 😺</small>", options: [
       { value: "low", emoji: "🛋️", label: "ぐうたら", sub: "ほぼ動かない" },
       { value: "mid", emoji: "🚶", label: "普通", sub: "毎日少し遊ぶ" },
       { value: "high", emoji: "🏃", label: "元気いっぱい", sub: "家中走り回る" },
     ] },
-  goal: { label: "ライフステージ</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>子猫<small>1歳未満</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>成猫<small>1 – 7歳</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>シニア<small>7歳以上</small></button> </div> <div id=\"neuterRow\"> <label>避妊・去勢済み？</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">はい</button> <button type=\"button\" data-v=\"no\">いいえ</button> </div> </div> <label>運動量 <small>— 正直に 😺</small></label> <div class=\"seg c3\" id=\"actSeg\"> <button type=\"button\" data-v=\"low\"><span class=\"em\">🛋️</span>ぐうたら<small>ほぼ動かない</small></button> <button type=\"button\" data-v=\"mid\" class=\"active\"><span class=\"em\">🚶</span>普通<small>毎日少し遊ぶ</small></button> <button type=\"button\" data-v=\"high\"><span class=\"em\">🏃</span>元気いっぱい<small>家中走り回る</small></button> </div> <label>目標", options: [
+  goal: { label: "目標", options: [
       { value: "maintain", emoji: "", label: "体重維持", sub: "" },
       { value: "lose", emoji: "", label: "ダイエット", sub: "" },
     ] },
-  density: { label: "ライフステージ</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>子猫<small>1歳未満</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>成猫<small>1 – 7歳</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>シニア<small>7歳以上</small></button> </div> <div id=\"neuterRow\"> <label>避妊・去勢済み？</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">はい</button> <button type=\"button\" data-v=\"no\">いいえ</button> </div> </div> <label>運動量 <small>— 正直に 😺</small></label> <div class=\"seg c3\" id=\"actSeg\"> <button type=\"button\" data-v=\"low\"><span class=\"em\">🛋️</span>ぐうたら<small>ほぼ動かない</small></button> <button type=\"button\" data-v=\"mid\" class=\"active\"><span class=\"em\">🚶</span>普通<small>毎日少し遊ぶ</small></button> <button type=\"button\" data-v=\"high\"><span class=\"em\">🏃</span>元気いっぱい<small>家中走り回る</small></button> </div> <label>目標</label> <div class=\"seg c2\" id=\"goalSeg\"> <button type=\"button\" data-v=\"maintain\" class=\"active\">体重維持</button> <button type=\"button\" data-v=\"lose\">ダイエット</button> </div> <label>フードのカロリー密度 <small>— kcal/kg</small>", manual: "✍️ 手動入力", search: "🔍 フードを探す",
+  density: { label: "フードのカロリー密度 <small>— kcal/kg</small>", manual: "✍️ 手動入力", search: "🔍 フードを探す",
     manualHint: "ドライフード約 3600 kcal/kg ・ ウェットフード約 800–1200 kcal/kg — パッケージをご確認ください", searchPlaceholder: "ブランドや商品名で検索（例：ロイヤルカナン）" },
   foodDb: { loading: "フードデータベースを読み込み中…", loaded: "データベース：{n}件 · 2026-09-30更新 · 2文字以上入力で検索", failed: "フードデータベースを読み込めませんでした。手動で入力してください。", none: "一致するフードがありません。英語のブランド名で試すか、手動で入力してください。", clear: "クリア", disclaimer: "カロリーデータは公開情報をもとに作成しています（2026-09-30更新）。地域・ロット・配合変更により数値が異なる場合がありますので、必ずパッケージの表示をご確認ください。本ツールは目安であり、獣医師の診断に代わるものではありません。" },
   calcBtn: "1日の給餌量を計算 🐾",

@@ -25,20 +25,20 @@ export default {
       { value: "adult", emoji: "🐈", label: "성묘", sub: "1–7살" },
       { value: "senior", emoji: "🧶", label: "노령묘", sub: "7살 이상" },
     ] },
-  neuter: { label: "생애 단계</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>아기고양이<small>1살 미만</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>성묘<small>1–7살</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>노령묘<small>7살 이상</small></button> </div> <div id=\"neuterRow\"> <label>중성화 수술 여부", options: [
+  neuter: { label: "중성화 수술 여부", options: [
       { value: "yes", emoji: "", label: "했어요", sub: "" },
       { value: "no", emoji: "", label: "안 했어요", sub: "" },
     ] },
-  activity: { label: "생애 단계</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>아기고양이<small>1살 미만</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>성묘<small>1–7살</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>노령묘<small>7살 이상</small></button> </div> <div id=\"neuterRow\"> <label>중성화 수술 여부</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">했어요</button> <button type=\"button\" data-v=\"no\">안 했어요</button> </div> </div> <label>활동량 <small>— 솔직하게 😺</small>", options: [
+  activity: { label: "활동량 <small>— 솔직하게 😺</small>", options: [
       { value: "low", emoji: "🛋️", label: "소파 감자", sub: "거의 안 움직임" },
       { value: "mid", emoji: "🚶", label: "보통", sub: "매일 조금씩 놀아요" },
       { value: "high", emoji: "🏃", label: "에너지 폭발", sub: "집안을 뛰어다녀요" },
     ] },
-  goal: { label: "생애 단계</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>아기고양이<small>1살 미만</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>성묘<small>1–7살</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>노령묘<small>7살 이상</small></button> </div> <div id=\"neuterRow\"> <label>중성화 수술 여부</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">했어요</button> <button type=\"button\" data-v=\"no\">안 했어요</button> </div> </div> <label>활동량 <small>— 솔직하게 😺</small></label> <div class=\"seg c3\" id=\"actSeg\"> <button type=\"button\" data-v=\"low\"><span class=\"em\">🛋️</span>소파 감자<small>거의 안 움직임</small></button> <button type=\"button\" data-v=\"mid\" class=\"active\"><span class=\"em\">🚶</span>보통<small>매일 조금씩 놀아요</small></button> <button type=\"button\" data-v=\"high\"><span class=\"em\">🏃</span>에너지 폭발<small>집안을 뛰어다녀요</small></button> </div> <label>목표", options: [
+  goal: { label: "목표", options: [
       { value: "maintain", emoji: "", label: "체중 유지", sub: "" },
       { value: "lose", emoji: "", label: "다이어트", sub: "" },
     ] },
-  density: { label: "생애 단계</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>아기고양이<small>1살 미만</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>성묘<small>1–7살</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>노령묘<small>7살 이상</small></button> </div> <div id=\"neuterRow\"> <label>중성화 수술 여부</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">했어요</button> <button type=\"button\" data-v=\"no\">안 했어요</button> </div> </div> <label>활동량 <small>— 솔직하게 😺</small></label> <div class=\"seg c3\" id=\"actSeg\"> <button type=\"button\" data-v=\"low\"><span class=\"em\">🛋️</span>소파 감자<small>거의 안 움직임</small></button> <button type=\"button\" data-v=\"mid\" class=\"active\"><span class=\"em\">🚶</span>보통<small>매일 조금씩 놀아요</small></button> <button type=\"button\" data-v=\"high\"><span class=\"em\">🏃</span>에너지 폭발<small>집안을 뛰어다녀요</small></button> </div> <label>목표</label> <div class=\"seg c2\" id=\"goalSeg\"> <button type=\"button\" data-v=\"maintain\" class=\"active\">체중 유지</button> <button type=\"button\" data-v=\"lose\">다이어트</button> </div> <label>사료 칼로리 밀도 <small>— kcal/kg</small>", manual: "✍️ 직접 입력", search: "🔍 사료 찾기",
+  density: { label: "사료 칼로리 밀도 <small>— kcal/kg</small>", manual: "✍️ 직접 입력", search: "🔍 사료 찾기",
     manualHint: "건사료 약 3600 kcal/kg · 습사료 약 800–1200 kcal/kg — 포장지 표기를 확인하세요", searchPlaceholder: "브랜드 또는 제품명 검색 (예: 로얄캐닌)" },
   foodDb: { loading: "사료 데이터베이스를 불러오는 중…", loaded: "데이터베이스: {n}개 · 2026-09-30 업데이트 · 2자 이상 입력하면 검색", failed: "사료 데이터베이스를 불러오지 못했습니다. 직접 입력해주세요.", none: "일치하는 사료가 없습니다. 영문 브랜드명으로 시도하거나 직접 입력해주세요.", clear: "지우기", disclaimer: "칼로리 데이터는 공개 자료를 바탕으로 정리되었습니다(2026-09-30 업데이트). 지역·배치·포뮬러 변경에 따라 수치가 다를 수 있으니 반드시 포장지 표기를 확인하세요. 본 도구는 추정치이며 수의사의 진단을 대신하지 않습니다." },
   calcBtn: "하루 급여량 계산 🐾",

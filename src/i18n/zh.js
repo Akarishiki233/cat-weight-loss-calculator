@@ -25,20 +25,20 @@ export default {
       { value: "adult", emoji: "🐈", label: "成猫", sub: "1 – 7 岁" },
       { value: "senior", emoji: "🧶", label: "老年猫", sub: "7 岁以上" },
     ] },
-  neuter: { label: "年龄阶段</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>幼猫<small>1 岁以下</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>成猫<small>1 – 7 岁</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>老年猫<small>7 岁以上</small></button> </div> <div id=\"neuterRow\"> <label>是否绝育？", options: [
+  neuter: { label: "是否绝育？", options: [
       { value: "yes", emoji: "", label: "已绝育", sub: "" },
       { value: "no", emoji: "", label: "未绝育", sub: "" },
     ] },
-  activity: { label: "年龄阶段</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>幼猫<small>1 岁以下</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>成猫<small>1 – 7 岁</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>老年猫<small>7 岁以上</small></button> </div> <div id=\"neuterRow\"> <label>是否绝育？</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">已绝育</button> <button type=\"button\" data-v=\"no\">未绝育</button> </div> </div> <label>活动量 <small>— 诚实一点 😺</small>", options: [
+  activity: { label: "活动量 <small>— 诚实一点 😺</small>", options: [
       { value: "low", emoji: "🛋️", label: "沙发土豆", sub: "几乎不动" },
       { value: "mid", emoji: "🚶", label: "一般", sub: "每天玩一会儿" },
       { value: "high", emoji: "🏃", label: "活力爆棚", sub: "满屋狂奔" },
     ] },
-  goal: { label: "年龄阶段</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>幼猫<small>1 岁以下</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>成猫<small>1 – 7 岁</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>老年猫<small>7 岁以上</small></button> </div> <div id=\"neuterRow\"> <label>是否绝育？</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">已绝育</button> <button type=\"button\" data-v=\"no\">未绝育</button> </div> </div> <label>活动量 <small>— 诚实一点 😺</small></label> <div class=\"seg c3\" id=\"actSeg\"> <button type=\"button\" data-v=\"low\"><span class=\"em\">🛋️</span>沙发土豆<small>几乎不动</small></button> <button type=\"button\" data-v=\"mid\" class=\"active\"><span class=\"em\">🚶</span>一般<small>每天玩一会儿</small></button> <button type=\"button\" data-v=\"high\"><span class=\"em\">🏃</span>活力爆棚<small>满屋狂奔</small></button> </div> <label>目标", options: [
+  goal: { label: "目标", options: [
       { value: "maintain", emoji: "", label: "保持体重", sub: "" },
       { value: "lose", emoji: "", label: "减肥", sub: "" },
     ] },
-  density: { label: "年龄阶段</label> <div class=\"seg c3\" id=\"stageSeg\"> <button type=\"button\" data-v=\"kitten\"><span class=\"em\">🍼</span>幼猫<small>1 岁以下</small></button> <button type=\"button\" data-v=\"adult\" class=\"active\"><span class=\"em\">🐈</span>成猫<small>1 – 7 岁</small></button> <button type=\"button\" data-v=\"senior\"><span class=\"em\">🧶</span>老年猫<small>7 岁以上</small></button> </div> <div id=\"neuterRow\"> <label>是否绝育？</label> <div class=\"seg c2\" id=\"neuterSeg\"> <button type=\"button\" data-v=\"yes\" class=\"active\">已绝育</button> <button type=\"button\" data-v=\"no\">未绝育</button> </div> </div> <label>活动量 <small>— 诚实一点 😺</small></label> <div class=\"seg c3\" id=\"actSeg\"> <button type=\"button\" data-v=\"low\"><span class=\"em\">🛋️</span>沙发土豆<small>几乎不动</small></button> <button type=\"button\" data-v=\"mid\" class=\"active\"><span class=\"em\">🚶</span>一般<small>每天玩一会儿</small></button> <button type=\"button\" data-v=\"high\"><span class=\"em\">🏃</span>活力爆棚<small>满屋狂奔</small></button> </div> <label>目标</label> <div class=\"seg c2\" id=\"goalSeg\"> <button type=\"button\" data-v=\"maintain\" class=\"active\">保持体重</button> <button type=\"button\" data-v=\"lose\">减肥</button> </div> <label>猫粮热量密度 <small>— kcal/kg</small>", manual: "✍️ 手动输入", search: "🔍 查找猫粮",
+  density: { label: "猫粮热量密度 <small>— kcal/kg</small>", manual: "✍️ 手动输入", search: "🔍 查找猫粮",
     manualHint: "干猫粮约 3600 kcal/kg · 湿猫粮约 800–1200 kcal/kg — 以包装标注为准", searchPlaceholder: "搜索品牌或产品名，如：皇家 / Royal Canin" },
   foodDb: { loading: "正在加载猫粮数据库…", loaded: "数据库共 {n} 款猫粮 · 更新于 2026-09-30 · 输入 2 个字以上开始搜索", failed: "猫粮数据库加载失败，请手动输入热量值。", none: "没有找到匹配的猫粮，试试英文品牌名，或手动输入热量值。", clear: "清除", disclaimer: "热量数据整理自公开资料（更新于 2026-09-30），不同地区、批次或配方调整可能导致差异，请以包装标注为准。本工具仅为估算，不能替代兽医建议。" },
   calcBtn: "计算每日喂食量 🐾",
