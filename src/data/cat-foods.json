@@ -1,0 +1,355 @@
+{
+  "updated": "2026-09-30",
+  "foods": [
+    {
+      "id": "fuliejia-tizhong-guanli",
+      "brand": "弗列加特",
+      "brand_zh": "",
+      "product": "体态管理鲜肉烘焙粮",
+      "product_zh": "",
+      "kcal_per_kg": 3600,
+      "market": "cn",
+      "source": "https://k.sina.cn/article_7879923668_1d5ae17d406801oqrs.html?from=health"
+    },
+    {
+      "id": "chengshiyikou-xiaoqingdai",
+      "brand": "诚实一口",
+      "brand_zh": "",
+      "product": "小轻袋",
+      "product_zh": "",
+      "kcal_per_kg": 3500,
+      "market": "cn",
+      "source": "https://k.sina.cn/article_7879923668_1d5ae17d406801oqrs.html?from=health"
+    },
+    {
+      "id": "xuyuanzai-tizhong-guanli",
+      "brand": "许愿仔",
+      "brand_zh": "",
+      "product": "体重管理粮",
+      "product_zh": "",
+      "kcal_per_kg": 3500,
+      "market": "cn",
+      "source": "https://k.sina.cn/article_7879777028_1d5abdb04068038j5c.html?from=health"
+    },
+    {
+      "id": "jiangxiaoao-jirou-donggan",
+      "brand": "江小傲",
+      "brand_zh": "",
+      "product": "鸡肉主食冻干",
+      "product_zh": "",
+      "kcal_per_kg": 3500,
+      "market": "cn",
+      "source": "https://k.sina.cn/article_7879849614_1d5acf68e06801eu44.html?from=health"
+    },
+    {
+      "id": "langnuo-wuzhentong-donggan",
+      "brand": "朗诺",
+      "brand_zh": "",
+      "product": "五珍桶全价主食冻干",
+      "product_zh": "",
+      "kcal_per_kg": 3999,
+      "market": "cn",
+      "source": "https://k.sina.cn/article_7879923669_1d5ae17d506801ecic.html?from=health"
+    },
+    {
+      "id": "langnuo-xiaoxianrou-donggan",
+      "brand": "朗诺",
+      "brand_zh": "",
+      "product": "小鲜肉主食冻干",
+      "product_zh": "",
+      "kcal_per_kg": 3999,
+      "market": "cn",
+      "source": "https://k.sina.cn/article_7879849614_1d5ae17d406801ejeq.html?from=health"
+    },
+    {
+      "id": "chongshixian-dongcang-donggan",
+      "brand": "宠实鲜",
+      "brand_zh": "",
+      "product": "冻舱全价冻干鲜肉猫粮",
+      "product_zh": "",
+      "kcal_per_kg": 3800,
+      "market": "cn",
+      "source": "https://k.sina.cn/article_7879849614_1d5acf68e06801eu44.html?from=health"
+    },
+    {
+      "id": "royal-canin-indoor-adult",
+      "brand": "Royal Canin",
+      "brand_zh": "皇家",
+      "product": "Indoor Adult",
+      "product_zh": "室内成猫粮",
+      "kcal_per_kg": 3534,
+      "market": "intl",
+      "source": "https://www.bluebarn.shop/product/royal-canin-indoor-adult-cat/"
+    },
+    {
+      "id": "royal-canin-kitten",
+      "brand": "Royal Canin",
+      "brand_zh": "皇家",
+      "product": "Kitten",
+      "product_zh": "幼猫粮",
+      "kcal_per_kg": 3823,
+      "market": "intl",
+      "source": "https://www.smartpetkw.com/product/royal-canin-kitten/"
+    },
+    {
+      "id": "hills-science-diet-adult-chicken",
+      "brand": "Hill's",
+      "brand_zh": "希尔斯",
+      "product": "Science Diet Adult 1-6 Chicken Recipe",
+      "product_zh": "成猫鸡肉配方",
+      "kcal_per_kg": 4044,
+      "market": "intl",
+      "source": "https://petico.sg/products/hills-science-diet-feline-adult-optimal-care-cat-dry-food-3-sizes/29343683641428"
+    },
+    {
+      "id": "hills-science-diet-kitten-chicken",
+      "brand": "Hill's",
+      "brand_zh": "希尔斯",
+      "product": "Science Diet Kitten Chicken Recipe",
+      "product_zh": "幼猫鸡肉配方",
+      "kcal_per_kg": 4152,
+      "market": "intl",
+      "source": "https://www.bluebarn.shop/product/hills-science-diet-kitten-chicken-recipe/"
+    },
+    {
+      "id": "purina-pro-plan-complete-essentials-adult-chicken-rice",
+      "brand": "Purina Pro Plan",
+      "brand_zh": "冠能",
+      "product": "Complete Essentials Adult Chicken & Rice Formula",
+      "product_zh": "成猫鸡肉米饭配方",
+      "kcal_per_kg": 4358,
+      "market": "intl",
+      "source": "https://www.petsmart.com/cat/food-and-treats/dry-food/purina-pro-plan-complete-essentials-adult-dry-cat-food---chicken-and-rice-with-probiotics-5139238.html?redirected=true"
+    },
+    {
+      "id": "purina-pro-plan-kitten-chicken-rice",
+      "brand": "Purina Pro Plan",
+      "brand_zh": "冠能",
+      "product": "Kitten Chicken & Rice Formula",
+      "product_zh": "幼猫鸡肉米饭配方",
+      "kcal_per_kg": 4370,
+      "market": "intl",
+      "source": "https://www.hbrandfeed.com/product/purina-pro-plan-kitten-chicken-rice-formula-dry-cat-food"
+    },
+    {
+      "id": "orijen-cat-and-kitten",
+      "brand": "Orijen",
+      "brand_zh": "渴望",
+      "product": "Cat & Kitten",
+      "product_zh": "全猫粮（幼猫+成猫）",
+      "kcal_per_kg": 4160,
+      "market": "intl",
+      "source": "https://www.kibblesandbiscuits.com/products/orijen-cat-kitten-dry-cat"
+    },
+    {
+      "id": "acana-wild-prairie",
+      "brand": "Acana",
+      "brand_zh": "爱肯拿",
+      "product": "Wild Prairie",
+      "product_zh": "荒野盛宴全猫粮",
+      "kcal_per_kg": 3930,
+      "market": "intl",
+      "source": "https://petz.ae/products/acana-wild-prairie-fish-dry-cat-food"
+    },
+    {
+      "id": "acana-indoor-entree",
+      "brand": "Acana",
+      "brand_zh": "爱肯拿",
+      "product": "Indoor Entrée",
+      "product_zh": "室内成猫粮",
+      "kcal_per_kg": 3630,
+      "market": "intl",
+      "source": "https://www.grangecoop.com/4-acana-indoor-cat/"
+    },
+    {
+      "id": "wellness-core-original",
+      "brand": "Wellness",
+      "brand_zh": "",
+      "product": "CORE Grain-Free Original",
+      "product_zh": "CORE无谷原味成猫粮",
+      "kcal_per_kg": 3783,
+      "market": "intl",
+      "source": "https://www.kwikpets.com/products/wellness-core-grain-free-original-formula-adult-dry-cat-food-5-lb"
+    },
+    {
+      "id": "blue-buffalo-wilderness-indoor-adult-chicken",
+      "brand": "Blue Buffalo",
+      "brand_zh": "",
+      "product": "Wilderness Indoor Adult Chicken",
+      "product_zh": "Wilderness室内成猫鸡肉粮",
+      "kcal_per_kg": 3674,
+      "market": "intl",
+      "source": "https://www.petsmart.com/cat/food-and-treats/dry-food/blue-buffalo-wilderness-indoor-adult-dry-cat-food---grain-free-chicken-317.html"
+    },
+    {
+      "id": "taste-of-the-wild-canyon-river",
+      "brand": "Taste of the Wild",
+      "brand_zh": "荒野盛宴",
+      "product": "Canyon River Feline Recipe",
+      "product_zh": "峡谷之河（鳟鱼三文鱼）",
+      "kcal_per_kg": 3741,
+      "market": "intl",
+      "source": "https://www.puprise.com/taste-of-the-wild-canyon-river-feline-recipe-with-trout-smoked-salmon-grain-free-dry-cat-food/"
+    },
+    {
+      "id": "taste-of-the-wild-rocky-mountain",
+      "brand": "Taste of the Wild",
+      "brand_zh": "荒野盛宴",
+      "product": "Rocky Mountain Feline Recipe",
+      "product_zh": "洛基山脉（鹿肉三文鱼）",
+      "kcal_per_kg": 3745,
+      "market": "intl",
+      "source": "https://www.chaar.us/pet/cat/cat-food/dry-cat-food/taste-of-the-wild-rocky-mountain-dry-cat-food/"
+    },
+    {
+      "id": "farmina-nd-prime-chicken-pomegranate",
+      "brand": "Farmina",
+      "brand_zh": "法米娜",
+      "product": "N&D Prime Adult Chicken & Pomegranate",
+      "product_zh": "N&D鸡肉石榴成猫粮",
+      "kcal_per_kg": 4204,
+      "market": "intl",
+      "source": "https://medicanimal.com/collections/all-food/products/farmina-prime-cat-chicken-pomegranate-adult"
+    },
+    {
+      "id": "farmina-vc7",
+      "brand": "Farmina",
+      "brand_zh": "法米娜",
+      "product": "VC7",
+      "product_zh": "VC7",
+      "kcal_per_kg": 3400,
+      "market": "intl",
+      "source": "https://k.sina.cn/article_7879923668_1d5ae17d406801oqrs.html?from=health"
+    },
+    {
+      "id": "applaws-complete-adult-chicken",
+      "brand": "Applaws",
+      "brand_zh": "",
+      "product": "Complete Adult Chicken",
+      "product_zh": "成猫鸡肉全价粮",
+      "kcal_per_kg": 4046,
+      "market": "intl",
+      "source": "https://www.petsathome.com/product/applaws-complete-and-balanced-grain-free-dry-adult-cat-food-chicken/23817P"
+    },
+    {
+      "id": "k9-natural-zhushi-donggan",
+      "brand": "K9 Natural",
+      "brand_zh": "",
+      "product": "主食冻干",
+      "product_zh": "",
+      "kcal_per_kg": 4200,
+      "market": "intl",
+      "source": "https://k.sina.cn/article_7879849614_1d5acf68e06801eu44.html?from=health"
+    },
+    {
+      "id": "petline-kaiseki-2tsu-no-gohoubi",
+      "brand": "Petline",
+      "brand_zh": "",
+      "product": "Kaiseki 2-tsu no Gohoubi Katsuo-bushi Zoe Pair",
+      "product_zh": "怀石双重奖赏干粮（鲣鱼风味）",
+      "kcal_per_kg": 3650,
+      "market": "intl",
+      "source": "https://www.amazon.co.jp/dp/B0DWWYV2BV/ref=cm_sw_r_cso_cp_apan_dp_SY2QKX5R48AQJWV6GEQR"
+    },
+    {
+      "id": "unicharm-neko-genki-fish-veg",
+      "brand": "Unicharm",
+      "brand_zh": "尤妮佳",
+      "product": "Neko Genki Fish & Vegetable Mix",
+      "product_zh": "猫元气鱼肉蔬菜混合味",
+      "kcal_per_kg": 3500,
+      "market": "intl",
+      "source": "https://www.amazon.co.jp/dp/B0C8SSQCZQ/ref=list_c_wl_gv_ov_lig_pab"
+    },
+    {
+      "id": "unicharm-gin-no-spoon-15plus",
+      "brand": "Unicharm",
+      "brand_zh": "尤妮佳",
+      "product": "Gin no Spoon Zeitaku Umami Shitate 15+",
+      "product_zh": "银之匙15岁以上奢华鲜味配方",
+      "kcal_per_kg": 4000,
+      "market": "intl",
+      "source": "https://jp.mercari.com/shops/product/2JU6cWpkEEKAd9PMVrkbxW"
+    },
+    {
+      "id": "unicharm-allwell-10plus-kidney",
+      "brand": "Unicharm",
+      "brand_zh": "尤妮佳",
+      "product": "AllWell 10+ Kidney Health Fish",
+      "product_zh": "奥威尔10岁以上肾脏健康护理鱼味",
+      "kcal_per_kg": 3400,
+      "market": "intl",
+      "source": "https://jp.mercari.com/shops/product/F8FjQN2kbKdkG7qGqGGJEP"
+    },
+    {
+      "id": "ciao-kaoritatsu-crunchy-churu-ae",
+      "brand": "Inaba",
+      "brand_zh": "",
+      "product": "Kaoritatsu Crunchy Churu-ae Box Luxury Variety",
+      "product_zh": "浓香脆粒拌啾噜豪华综合装",
+      "kcal_per_kg": 3500,
+      "market": "intl",
+      "source": "https://www.amazon.co.jp/dp/B0DQ4VNNDN/ref=cm_sw_r_cso_cp_mwn_dp_N06S8ZJN87CMVTADGEM6"
+    },
+    {
+      "id": "cainz-petsone-cat-meal",
+      "brand": "Cainz",
+      "brand_zh": "",
+      "product": "Pet'sOne Cat Meal Tuna & Chicken",
+      "product_zh": "猫餐金枪鱼鸡肉味",
+      "kcal_per_kg": 3500,
+      "market": "intl",
+      "source": "https://www.amazon.co.jp/dp/B0CHF593ZF/ref=list_c_wl_gv_dp_ii"
+    },
+    {
+      "id": "catsrang-new-all-life-stages",
+      "brand": "Catsrang",
+      "brand_zh": "",
+      "product": "New Catsrang All Life Stages",
+      "product_zh": "新版全龄期猫粮",
+      "kcal_per_kg": 3230,
+      "market": "intl",
+      "source": "https://www.biteme.co.kr/shop/product/product_view?product_cd=1000017734"
+    },
+    {
+      "id": "harim-the-real-cat-gf-adult",
+      "brand": "Harim",
+      "brand_zh": "",
+      "product": "The Real Cat Grain-Free Crunch Adult",
+      "product_zh": "The Real 无谷物脆干粮（成猫）",
+      "kcal_per_kg": 3490,
+      "market": "intl",
+      "source": "https://openknow.kr/%ea%b3%a0%ec%96%91%ec%9d%b4-%ec%82%ac%eb%a3%8c-%ec%b6%94%ec%b2%9c-%eb%81%9d%ed%8c%90%eb%b9%84%ea%b5%90-%ed%95%98%eb%a6%bc%ed%8e%ab%ed%91%b8%eb%93%9c-%eb%b0%a5%ec%9d%b4%eb%b3%b4%ec%95%bd%c2%b7/"
+    },
+    {
+      "id": "iskhan-gf-neutered-lite",
+      "brand": "Iskhan",
+      "brand_zh": "",
+      "product": "Cat Grain-Free Neutered & Lite",
+      "product_zh": "无谷绝育/体重管理猫粮",
+      "kcal_per_kg": 3334,
+      "market": "intl",
+      "source": "https://catminzzi.tistory.com/19"
+    },
+    {
+      "id": "iskhan-gf-adult",
+      "brand": "Iskhan",
+      "brand_zh": "",
+      "product": "Cat Grain-Free Adult",
+      "product_zh": "无谷成猫粮",
+      "kcal_per_kg": 3950,
+      "market": "intl",
+      "source": "https://catminzzi.tistory.com/19"
+    },
+    {
+      "id": "iskhan-gf-senior",
+      "brand": "Iskhan",
+      "brand_zh": "",
+      "product": "Cat Grain-Free Senior",
+      "product_zh": "无谷老年猫粮",
+      "kcal_per_kg": 3800,
+      "market": "intl",
+      "source": "https://catminzzi.tistory.com/19"
+    }
+  ]
+}
