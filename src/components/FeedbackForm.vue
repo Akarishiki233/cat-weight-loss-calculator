@@ -11,7 +11,7 @@ const { t } = useI18n()
 // unlike FormSubmit which exposed it in the endpoint URL.
 const ENDPOINT = 'https://api.web3forms.com/submit'
 // TODO(jay): replace with the real key from web3forms.com
-const ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+const ACCESS_KEY = 'b6745b53-ab07-485f-9fae-26c757b2f5cb'
 // Shown only as a last-resort fallback when the API is unreachable.
 const CONTACT_EMAIL = 'akrishiki4869@gmail.com'
 
