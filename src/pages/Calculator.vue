@@ -10,6 +10,7 @@ import FaqSection from '../components/FaqSection.vue'
 import FeedbackForm from '../components/FeedbackForm.vue'
 import { calculate, toKg, fromKg, localeFromPath, foodDbFor, foodBrand, foodProduct } from '../lib/calc.js'
 import { foodPagePath } from '../lib/food-pages.js'
+import { TOOL_IDS, toolI18nKey, toolPagePath } from '../lib/tool-pages.js'
 import foodsData from '../data/cat-foods.json'
 
 const { t, tm } = useI18n()
@@ -22,6 +23,15 @@ const foodLinks = computed(() =>
   foodDbFor(locale.value, foodsData.foods).map((f) => ({
     name: `${foodBrand(f, isZh.value)} ${foodProduct(f, isZh.value)}`,
     path: foodPagePath(locale.value, f.id),
+  })),
+)
+
+/* Calculator-matrix tool pages for internal linking. */
+const toolsLinks = computed(() =>
+  TOOL_IDS.map((id) => ({
+    name: t(`${toolI18nKey(id)}.name`),
+    tagline: t(`${toolI18nKey(id)}.tagline`),
+    path: toolPagePath(locale.value, id),
   })),
 )
 
@@ -294,6 +304,17 @@ const tipText = computed(() =>
   <FaqSection />
 
   <section v-reveal class="more-foods">
+    <h2>{{ t('tools.title') }}</h2>
+    <p class="sub">{{ t('tools.sub') }}</p>
+    <div class="tool-cards">
+      <RouterLink v-for="tl in toolsLinks" :key="tl.path" :to="tl.path" class="tool-card">
+        <b>{{ tl.name }}</b>
+        <span>{{ tl.tagline }}</span>
+      </RouterLink>
+    </div>
+  </section>
+
+  <section v-reveal class="more-foods">
     <h2>{{ t('food.moreTitle') }}</h2>
     <p class="sub">{{ t('food.moreSub') }}</p>
     <div class="chips">
@@ -344,5 +365,30 @@ const tipText = computed(() =>
 .chip:hover {
   border-color: var(--accent, #e07b39);
   color: var(--accent, #e07b39);
+}
+.tool-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.tool-card {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--card-border, #e8e2d9);
+  border-radius: 14px;
+  color: inherit;
+  text-decoration: none;
+  background: var(--card-bg, #fff);
+}
+.tool-card:hover {
+  border-color: var(--accent, #e07b39);
+}
+.tool-card b {
+  display: block;
+  margin-bottom: 4px;
+}
+.tool-card span {
+  font-size: 0.85rem;
+  color: var(--muted, #8a7f72);
 }
 </style>

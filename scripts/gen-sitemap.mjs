@@ -4,6 +4,7 @@ import { writeFileSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { allFoodPages } from '../src/lib/food-pages.js'
+import { allToolPages } from '../src/lib/tool-pages.js'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const SITE = 'https://akarishiki233.github.io/cat-weight-loss-calculator'
@@ -21,6 +22,9 @@ const urls = [
 ]
 for (const p of allFoodPages(foods)) {
   urls.push({ loc: p.path, priority: '0.7', changefreq: 'monthly' })
+}
+for (const p of allToolPages()) {
+  urls.push({ loc: p.path, priority: '0.8', changefreq: 'monthly' })
 }
 
 const xml =

@@ -112,7 +112,7 @@ print('== 3. dist static files ==')
 for f in ['sitemap.xml', 'robots.txt', '404.html', 'google0caa8c740c641dd9.html', 'data/cat-foods.json']:
     check(f'dist/{f} exists', (DIST / f).exists())
 sm = (DIST / 'sitemap.xml').read_text() if (DIST / 'sitemap.xml').exists() else ''
-check('sitemap has 123 urls (4 mains + 119 food pages)', sm.count('<loc>') == 123, f'found {sm.count("<loc>")}')
+check('sitemap has 135 urls (4 mains + 119 food pages + 12 tool pages)', sm.count('<loc>') == 135, f'found {sm.count("<loc>")}')
 
 print('== 4. i18n integrity ==')
 for loc in ['en', 'zh', 'ja', 'ko']:
@@ -247,7 +247,7 @@ for loc in ['en', 'ja', 'ko']:
 
 # sitemap covers all food pages + 4 mains.
 sm = (ROOT / 'public/sitemap.xml').read_text(encoding='utf-8')
-check('sitemap 123 urls', sm.count('<url>') == 123, f'got {sm.count("<url>")}')
+check('sitemap 135 urls', sm.count('<url>') == 135, f'got {sm.count("<url>")}')
 check('sitemap has food urls', all(f'<loc>{SITE}{p["path"]}</loc>' in sm for p in pages))
 
 # i18n food-key parity across locales.
@@ -267,6 +267,80 @@ for loc, path, expect_n in [('en', 'index.html', 28), ('zh', 'zh/index.html', 35
     html = (DIST / path).read_text(encoding='utf-8')
     n = html.count('/foods/')
     check(f'{loc} calculator links {expect_n} food pages', n >= expect_n, f'got {n} /foods/ refs')
+
+print('== 8. tool pages (water/bcs/age × 4 locales = 12) ==')
+TOOL_IDS = ['water', 'bcs', 'age']
+TOOL_LOCALES = ['en', 'zh', 'ja', 'ko']
+
+def tool_path(loc, tid):
+    return ('' if loc == 'en' else f'/{loc}') + f'/{tid}/'
+
+TOOL_TITLE_KW = {
+    'water': {'en': 'How Much Water Should My Cat Drink', 'zh': '猫咪每天该喝多少水',
+              'ja': '猫は1日にどれくらい水を飲めばいい', 'ko': '고양이는 하루에 물을 얼마나'},
+    'bcs': {'en': 'Body Condition Score', 'zh': '体况评分', 'ja': 'BCS', 'ko': 'BCS'},
+    'age': {'en': 'Cat Years to Human Years', 'zh': '猫咪年龄换算人类年龄',
+            'ja': '猫の年齢を人間の年齢に換算', 'ko': '고양이 나이를 사람 나이로 환산'},
+}
+
+n_tool = 0
+for tid in TOOL_IDS:
+    for loc in TOOL_LOCALES:
+        p = tool_path(loc, tid)
+        fp = DIST / (p.lstrip('/') + 'index.html')
+        check(f'tool page exists: {p}', fp.exists())
+        if not fp.exists():
+            continue
+        n_tool += 1
+        html = fp.read_text(encoding='utf-8')
+        check(f'{p}: title keyword', TOOL_TITLE_KW[tid][loc] in html)
+        check(f'{p}: canonical', f'href="{SITE}{p}"' in html or f'href="{SITE}{p}"\n' in html)
+        check(f'{p}: hreflang ×5', html.count('hreflang=') == 5)
+        check(f'{p}: FAQ JSON-LD', 'FAQPage' in html)
+        check(f'{p}: CTA button', '🐾' in html)
+        if tid == 'water':
+            check(f'{p}: default 4.5kg → 225 ml', '225' in html and ('ml' in html or '毫升' in html))
+            check(f'{p}: table has 4kg → 200 ml row', '200' in html)
+        elif tid == 'bcs':
+            check(f'{p}: 9 score buttons', 'bcs-btns' in html and html.count('type="button"') >= 9)
+            check(f'{p}: default score 5 desc', {'en': 'Ideal: ribs felt without excess fat',
+                                                'zh': '5 分——理想', 'ja': '5——理想', 'ko': '5——이상적'}[loc] in html)
+        elif tid == 'age':
+            check(f'{p}: default 5yr → 36 human years', '>36<' in html or ' 36 ' in html or '36' in html)
+            check(f'{p}: 20-year chart row', '>20<' in html or '<td>20</td>' in html)
+check('12 tool pages built', n_tool == 12, f'got {n_tool}')
+
+# sitemap covers all 12 tool pages.
+sm = (ROOT / 'public/sitemap.xml').read_text(encoding='utf-8')
+check('sitemap has tool urls',
+      all(f'<loc>{SITE}{tool_path(loc, tid)}</loc>' in sm for tid in TOOL_IDS for loc in TOOL_LOCALES))
+
+# i18n tool-key parity across locales.
+TOOL_BASE_KEYS = ['name', 'tagline', 'title', 'metaDesc', 'intro', 'methodTitle', 'methodBody',
+                  'faqTitle', 'faq1q', 'faq1a', 'faq2q', 'faq2a', 'disclaimer',
+                  'ctaTitle', 'ctaBody', 'ctaBtn']
+TOOL_EXTRA_KEYS = {
+    'toolwater': ['weightLabel', 'resultMl', 'rangeNote', 'tableTitle', 'thWeight', 'thWater'],
+    'toolbcs': ['scoreLabel', 'weightLabel', 'catUnder', 'catIdeal', 'catOver', 'idealNote', 'descs'],
+    'toolage': ['ageLabel', 'resultAge', 'stageKitten', 'stageAdult', 'stageSenior',
+                'tableTitle', 'thCat', 'thHuman'],
+}
+for loc in TOOL_LOCALES:
+    src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
+    m = re.search(r'tools:\s*\{(.*?)\n  \}\n\}', src, re.S)
+    missing = [k for k in ['title', 'sub'] if not m or f'{k}:' not in m.group(1)]
+    check(f'{loc}.js: tools hub keys complete', not missing, f'missing {missing}' if missing else '')
+    for tkey, extra in TOOL_EXTRA_KEYS.items():
+        m = re.search(rf'{tkey}:\s*\{{(.*?)\n  \}}\n\}}', src, re.S)
+        missing = [k for k in TOOL_BASE_KEYS + extra if not m or f'{k}:' not in m.group(1)]
+        check(f'{loc}.js: {tkey} keys complete', not missing, f'missing {missing}' if missing else '')
+
+# Calculator page links to all 3 tools per locale.
+for loc, path in [('en', 'index.html'), ('zh', 'zh/index.html'),
+                  ('ja', 'ja/index.html'), ('ko', 'ko/index.html')]:
+    html = (DIST / path).read_text(encoding='utf-8')
+    for tid in TOOL_IDS:
+        check(f'{loc} calculator links tool {tid}', f'/{tid}/' in html)
 
 print()
 if fails:
