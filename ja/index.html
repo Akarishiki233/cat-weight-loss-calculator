@@ -414,8 +414,16 @@ function calc(){
 }
 /* cat food calorie database */
 const escHtml = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const foodBrand = f => f.brand + (f.brand_zh && f.brand_zh !== f.brand ? ' (' + f.brand_zh + ')' : '');
-const foodProduct = f => f.product + (f.product_zh && f.product_zh !== f.product ? ' \u00b7 ' + f.product_zh : '');
+const pageLang = document.documentElement.lang || 'en';
+const pageIsZh = pageLang === 'zh';
+const foodBrand = f => {
+  if (pageIsZh) { const zh = f.brand_zh || f.brand; return zh !== f.brand ? zh + ' (' + f.brand + ')' : zh; }
+  return f.brand;
+};
+const foodProduct = f => {
+  if (pageIsZh) { const zh = f.product_zh || f.product; return zh !== f.product ? zh + ' \u00b7 ' + f.product : zh; }
+  return f.product;
+};
 let foodDb = [], pickedFood = null;
 const T = {
   loaded: n => 'データベース：'+n+'件 · 2026-09-30更新 · 2文字以上入力で検索',
@@ -426,7 +434,7 @@ const T = {
 fetch('/test-for-muse/data/cat-foods.json')
   .then(r => { if(!r.ok) throw 0; return r.json(); })
   .then(d => {
-    foodDb = d.foods || [];
+    foodDb = (d.foods || []).filter(f => pageIsZh || f.market !== 'cn');
     document.getElementById('foodDbInfo').textContent = T.loaded(foodDb.length);
   })
   .catch(() => { document.getElementById('foodDbInfo').textContent = T.failed; });
