@@ -11,7 +11,17 @@ import './style.css'
 
 export const createApp = ViteSSG(
   App,
-  { routes, base: '/cat-weight-loss-calculator/' },
+  {
+    routes,
+    base: '/cat-weight-loss-calculator/',
+    // Without this, the browser keeps the old scroll position on navigation:
+    // clicking a tool link at the bottom of the calculator landed users at
+    // the bottom of the new tool page, hiding the interactive tool itself.
+    scrollBehavior(to, from, savedPosition) {
+      if (savedPosition) return savedPosition
+      return { top: 0 }
+    },
+  },
   ({ app, router, isClient }) => {
     const i18n = createI18n({
       legacy: false,

@@ -365,6 +365,12 @@ for loc, path in [('en', 'index.html'), ('zh', 'zh/index.html'),
     for tid in TOOL_IDS:
         check(f'{loc} calculator links tool {tid}', f'/{tid}/' in html)
 
+print('== 9. router scroll behavior ==')
+main_js = (ROOT / 'src/main.js').read_text(encoding='utf-8')
+check('scrollBehavior defined', 'scrollBehavior' in main_js)
+check('scrollBehavior returns top 0', re.search(r'scrollBehavior\(.*?\{.*?top:\s*0', main_js, re.S) is not None)
+check('scrollBehavior preserves back/forward position', 'savedPosition' in main_js)
+
 print()
 if fails:
     print(f'SELFTEST FAILED: {len(fails)} check(s)')
