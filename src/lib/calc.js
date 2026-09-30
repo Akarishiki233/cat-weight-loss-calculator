@@ -42,9 +42,9 @@ export function toKg(value, unit, locale) {
   return value / (ALT_PER_KG[locale] || 2.20462)
 }
 
-export function fromKg(kg, unit, locale) {
-  if (unit === 'kg') return kg
-  return kg * (ALT_PER_KG[locale] || 2.20462)
+export function fromKg(value, unit, locale) {
+  if (unit === 'kg') return value * (ALT_PER_KG[locale] || 2.20462)
+  return value
 }
 
 // --- cat food database helpers ---

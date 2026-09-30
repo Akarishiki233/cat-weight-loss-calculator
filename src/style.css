@@ -155,3 +155,10 @@
     .cselect-list li button{padding:15px 12px;font-size:16px}
     .cselect-btn{padding:14px 15px}
   }
+
+  /* ---------- food density block: breathing room between toggle and inputs ---------- */
+  .density-block .seg{margin-bottom:18px}
+  .density-input input{margin-bottom:4px}
+  @media(max-width:480px){
+    .density-block .seg{margin-bottom:20px}
+  }

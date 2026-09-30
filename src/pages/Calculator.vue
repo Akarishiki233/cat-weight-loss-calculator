@@ -239,14 +239,16 @@ const tipText = computed(() =>
     <label v-html="t('goal.label')"></label>
     <SegControl v-model="goal" :options="tm('goal.options')" :cols="2" />
 
-    <label v-html="t('density.label')"></label>
-    <SegControl v-model="densityMode" :options="densityModes" :cols="2" />
-    <div v-show="densityMode === 'manual'">
-      <input v-model="density" type="number" min="1000" max="6000" step="50" />
-      <p class="hint" v-html="t('density.manualHint')"></p>
-    </div>
-    <div v-show="densityMode === 'search'">
-      <FoodSearch v-model="pickedFood" :locale="locale" />
+    <div class="density-block">
+      <label v-html="t('density.label')"></label>
+      <SegControl v-model="densityMode" :options="densityModes" :cols="2" />
+      <div class="density-input" v-show="densityMode === 'manual'">
+        <input v-model="density" type="number" min="1000" max="6000" step="50" />
+        <p class="hint" v-html="t('density.manualHint')"></p>
+      </div>
+      <div class="density-input" v-show="densityMode === 'search'">
+        <FoodSearch v-model="pickedFood" :locale="locale" />
+      </div>
     </div>
     <p class="disclaimer" v-html="t('foodDb.disclaimer')"></p>
 
