@@ -297,17 +297,32 @@ for tid in TOOL_IDS:
         check(f'{p}: canonical', f'href="{SITE}{p}"' in html or f'href="{SITE}{p}"\n' in html)
         check(f'{p}: hreflang ×5', html.count('hreflang=') == 5)
         check(f'{p}: FAQ JSON-LD', 'FAQPage' in html)
+        check(f'{p}: FAQ has 4 questions', html.count('"@type": "Question"') == 4)
         check(f'{p}: CTA button', '🐾' in html)
         if tid == 'water':
             check(f'{p}: default 4.5kg → 225 ml', '225' in html and ('ml' in html or '毫升' in html))
             check(f'{p}: table has 4kg → 200 ml row', '200' in html)
+            check(f'{p}: why-hydration section', {'en': 'Why hydration matters so much',
+                                                  'zh': '为什么喝水对猫这么重要',
+                                                  'ja': 'なぜ猫にとって水分が重要なのか',
+                                                  'ko': '고양이에게 수분이 중요한 이유'}[loc] in html)
+            check(f'{p}: tips list rendered', {'en': 'pet water fountain', 'zh': '饮水机',
+                                               'ja': '給水器', 'ko': '급수기'}[loc] in html)
         elif tid == 'bcs':
             check(f'{p}: 9 score buttons', 'bcs-btns' in html and html.count('type="button"') >= 9)
             check(f'{p}: default score 5 desc', {'en': 'Ideal: ribs felt without excess fat',
                                                 'zh': '5 分——理想', 'ja': '5——理想', 'ko': '5——이상적'}[loc] in html)
+            check(f'{p}: 9-point chart section', {'en': 'The 9-point BCS chart', 'zh': '9 分制体况评分表',
+                                                  'ja': '9段階BCSチャート', 'ko': '9단계 BCS 차트'}[loc] in html)
+            check(f'{p}: overweight guidance', {'en': 'hepatic lipidosis', 'zh': '脂肪肝',
+                                                'ja': '肝リピドーシス', 'ko': '리피도시스'}[loc] in html)
         elif tid == 'age':
             check(f'{p}: default 5yr → 36 human years', '>36<' in html or ' 36 ' in html or '36' in html)
             check(f'{p}: 20-year chart row', '>20<' in html or '<td>20</td>' in html)
+            check(f'{p}: life stages section', {'en': 'Geriatric', 'zh': '高龄', 'ja': 'ハイシニア',
+                                                'ko': '초고령'}[loc] in html)
+            check(f'{p}: senior care section', {'en': 'Caring for a senior cat', 'zh': '老年猫照护要点',
+                                                'ja': 'シニア猫ケアのポイント', 'ko': '노묘 케어 포인트'}[loc] in html)
 check('12 tool pages built', n_tool == 12, f'got {n_tool}')
 
 # sitemap covers all 12 tool pages.
@@ -320,10 +335,18 @@ TOOL_BASE_KEYS = ['name', 'tagline', 'title', 'metaDesc', 'intro', 'methodTitle'
                   'faqTitle', 'faq1q', 'faq1a', 'faq2q', 'faq2a', 'disclaimer',
                   'ctaTitle', 'ctaBody', 'ctaBtn']
 TOOL_EXTRA_KEYS = {
-    'toolwater': ['weightLabel', 'resultMl', 'rangeNote', 'tableTitle', 'thWeight', 'thWater'],
-    'toolbcs': ['scoreLabel', 'weightLabel', 'catUnder', 'catIdeal', 'catOver', 'idealNote', 'descs'],
+    'toolwater': ['weightLabel', 'resultMl', 'rangeNote', 'tableTitle', 'thWeight', 'thWater',
+                  'whyTitle', 'whyBody', 'factorsTitle', 'factorsBody', 'signsTitle', 'signsBody',
+                  'tipsTitle', 'tipsList', 'vetTitle', 'vetBody',
+                  'faq3q', 'faq3a', 'faq4q', 'faq4a'],
+    'toolbcs': ['scoreLabel', 'weightLabel', 'catUnder', 'catIdeal', 'catOver', 'idealNote', 'descs',
+                'howTitle', 'stepsList', 'chartTitle', 'chartTh1', 'chartTh2',
+                'overTitle', 'overBody', 'underTitle', 'underBody',
+                'faq3q', 'faq3a', 'faq4q', 'faq4a'],
     'toolage': ['ageLabel', 'resultAge', 'stageKitten', 'stageAdult', 'stageSenior',
-                'tableTitle', 'thCat', 'thHuman'],
+                'tableTitle', 'thCat', 'thHuman',
+                'whyTitle', 'whyBody', 'stagesTitle', 'stagesList', 'seniorTitle', 'seniorBody',
+                'faq3q', 'faq3a', 'faq4q', 'faq4a'],
 }
 for loc in TOOL_LOCALES:
     src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')

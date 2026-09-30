@@ -24,6 +24,9 @@ const waterRows = computed(() => [2, 3, 4, 5, 6, 7, 8].map((w) => ({ w, ml: w * 
 const bcsScore = ref(5)
 const bcsWeight = ref(4.5)
 const bcsDescs = computed(() => tm('toolbcs.descs'))
+const tipsList = computed(() => tm('toolwater.tipsList'))
+const bcsSteps = computed(() => tm('toolbcs.stepsList'))
+const ageStages = computed(() => tm('toolage.stagesList'))
 const bcsCat = computed(() =>
   bcsScore.value < 4 ? tk('catUnder') : bcsScore.value <= 5 ? tk('catIdeal') : tk('catOver'),
 )
@@ -59,6 +62,8 @@ const hreflangOf = (l) => (l === 'zh' ? 'zh-CN' : l)
 const faqItems = computed(() => [
   { q: tk('faq1q'), a: tk('faq1a') },
   { q: tk('faq2q'), a: tk('faq2a') },
+  { q: tk('faq3q'), a: tk('faq3a') },
+  { q: tk('faq4q'), a: tk('faq4a') },
 ])
 
 useHead({
@@ -128,6 +133,21 @@ useHead({
       </table>
     </section>
 
+    <section v-if="toolId === 'water'" class="card">
+      <h2>{{ tk('whyTitle') }}</h2>
+      <p>{{ tk('whyBody') }}</p>
+      <h2>{{ tk('factorsTitle') }}</h2>
+      <p>{{ tk('factorsBody') }}</p>
+      <h2>{{ tk('signsTitle') }}</h2>
+      <p>{{ tk('signsBody') }}</p>
+      <h2>{{ tk('tipsTitle') }}</h2>
+      <ul class="tips">
+        <li v-for="(tip, i) in tipsList" :key="i">{{ tip }}</li>
+      </ul>
+      <h2>{{ tk('vetTitle') }}</h2>
+      <p>{{ tk('vetBody') }}</p>
+    </section>
+
     <!-- bcs assessment -->
     <section v-if="toolId === 'bcs'" class="card">
       <div class="fld">
@@ -155,6 +175,34 @@ useHead({
       </div>
     </section>
 
+    <section v-if="toolId === 'bcs'" class="card">
+      <h2>{{ tk('howTitle') }}</h2>
+      <ol class="tips">
+        <li v-for="(s, i) in bcsSteps" :key="i">{{ s }}</li>
+      </ol>
+      <h2>{{ tk('chartTitle') }}</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>{{ tk('chartTh1') }}</th>
+            <th>{{ tk('chartTh2') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(d, i) in bcsDescs" :key="i">
+            <td>
+              <strong>{{ i + 1 }}</strong>
+            </td>
+            <td class="left">{{ d }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>{{ tk('overTitle') }}</h2>
+      <p>{{ tk('overBody') }}</p>
+      <h2>{{ tk('underTitle') }}</h2>
+      <p>{{ tk('underBody') }}</p>
+    </section>
+
     <!-- age converter -->
     <section v-if="toolId === 'age'" class="card">
       <label class="fld">
@@ -178,6 +226,17 @@ useHead({
           </tr>
         </tbody>
       </table>
+    </section>
+
+    <section v-if="toolId === 'age'" class="card">
+      <h2>{{ tk('whyTitle') }}</h2>
+      <p>{{ tk('whyBody') }}</p>
+      <h2>{{ tk('stagesTitle') }}</h2>
+      <ul class="tips">
+        <li v-for="(s, i) in ageStages" :key="i">{{ s }}</li>
+      </ul>
+      <h2>{{ tk('seniorTitle') }}</h2>
+      <p>{{ tk('seniorBody') }}</p>
     </section>
 
     <section class="card">
@@ -234,6 +293,21 @@ h1 {
 }
 .card h2:first-child {
   margin-top: 0;
+}
+.card p {
+  line-height: 1.7;
+  margin: 0 0 12px;
+}
+.tips {
+  padding-left: 20px;
+  margin: 0 0 12px;
+}
+.tips li {
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+td.left {
+  text-align: left;
 }
 .fld {
   display: flex;
