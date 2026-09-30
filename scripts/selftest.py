@@ -114,6 +114,26 @@ for loc in ['en', 'zh', 'ja', 'ko']:
     r = run(['node', '--check', f'src/i18n/{loc}.js'])
     check(f'{loc}.js: node syntax ok', r.returncode == 0)
 
+print('== 4b. vue-i18n reactivity ==')
+# tm() in <script setup> returns a one-time snapshot: it must be wrapped in
+# computed() (or live in template/computed) or the text won't update on
+# client-side language switching. Regression guard for the FAQ bug (2026-09-30).
+import re as _re
+for vue in sorted((ROOT / 'src').rglob('*.vue')):
+    src = vue.read_text(encoding='utf-8')
+    m = _re.search(r'<script setup>(.*?)</script>', src, _re.S)
+    if not m:
+        continue
+    setup = m.group(1)
+    for ln, line in enumerate(setup.splitlines(), 1):
+        # Direct `const x = tm(...)` in setup is a one-time snapshot (not reactive).
+        # tm() inside computed()/template, or as an object property inside a
+        # computed, is fine.
+        if _re.search(r'(const|let|var)\s+\w+\s*=\s*tm\(', line):
+            check(f'{vue.name}:{ln} bare tm() snapshot in setup (wrap in computed)',
+                  False, line.strip()[:80])
+check('no bare tm() snapshots in <script setup>', True)
+
 print('== 5. cat food data ==')
 data = json.loads((ROOT / 'src/data/cat-foods.json').read_text(encoding='utf-8'))
 foods = data['foods']

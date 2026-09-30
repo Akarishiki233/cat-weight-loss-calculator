@@ -1,8 +1,11 @@
 <script setup>
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t, tm } = useI18n()
-const items = tm('faq.items')
+// tm() returns a one-time snapshot — wrap in computed so the FAQ list
+// re-resolves when the locale changes via client-side language switching.
+const items = computed(() => tm('faq.items'))
 </script>
 
 <template>
