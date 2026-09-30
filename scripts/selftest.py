@@ -8,6 +8,7 @@ import json
 import re
 import subprocess
 import sys
+import html as html_lib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -296,7 +297,21 @@ for tid in TOOL_IDS:
         check(f'{p}: title keyword', TOOL_TITLE_KW[tid][loc] in html)
         check(f'{p}: canonical', f'href="{SITE}{p}"' in html or f'href="{SITE}{p}"\n' in html)
         check(f'{p}: hreflang ×5', html.count('hreflang=') == 5)
-        check(f'{p}: FAQ JSON-LD', 'FAQPage' in html)
+        # Interactive widget must render above the intro copy (first screen).
+        # NOTE: SSR HTML-escapes quotes (don't -> don&#39;t), so unescape first.
+        src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
+        tm = re.search(rf'tool{tid}:\s*\{{(.*?)\n  \}}\n\}}', src, re.S)
+        intro_m = re.search(r'intro:\s*"((?:[^"\\]|\\.)*)"', tm.group(1)) if tm else None
+        if intro_m:
+            # Normalize whitespace: SSR pretty-printing injects newlines/indentation
+            # around the interpolated text.
+            anchor = re.sub(r'\s+', ' ', intro_m.group(1)[:40]).strip()
+            u = re.sub(r'\s+', ' ', html_lib.unescape(html))
+            check(f'{p}: interactive card above intro copy',
+                  'big-result' in u and anchor in u
+                  and u.index('big-result') < u.index(anchor))
+        else:
+            check(f'{p}: intro found in i18n', False)
         check(f'{p}: FAQ has 4 questions', html.count('"@type": "Question"') == 4)
         check(f'{p}: CTA button', '🐾' in html)
         if tid == 'water':

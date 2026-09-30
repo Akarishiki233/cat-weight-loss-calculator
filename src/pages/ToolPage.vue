@@ -106,7 +106,6 @@ useHead({
 <template>
   <main class="tool-page">
     <h1>{{ tk('title') }}</h1>
-    <p class="intro">{{ tk('intro') }}</p>
 
     <!-- water intake calculator -->
     <section v-if="toolId === 'water'" class="card">
@@ -134,6 +133,7 @@ useHead({
     </section>
 
     <section v-if="toolId === 'water'" class="card">
+      <p class="lede">{{ tk('intro') }}</p>
       <h2>{{ tk('whyTitle') }}</h2>
       <p>{{ tk('whyBody') }}</p>
       <h2>{{ tk('factorsTitle') }}</h2>
@@ -176,6 +176,7 @@ useHead({
     </section>
 
     <section v-if="toolId === 'bcs'" class="card">
+      <p class="lede">{{ tk('intro') }}</p>
       <h2>{{ tk('howTitle') }}</h2>
       <ol class="tips">
         <li v-for="(s, i) in bcsSteps" :key="i">{{ s }}</li>
@@ -229,6 +230,7 @@ useHead({
     </section>
 
     <section v-if="toolId === 'age'" class="card">
+      <p class="lede">{{ tk('intro') }}</p>
       <h2>{{ tk('whyTitle') }}</h2>
       <p>{{ tk('whyBody') }}</p>
       <h2>{{ tk('stagesTitle') }}</h2>
@@ -279,6 +281,12 @@ h1 {
   color: var(--muted, #8a7f72);
   line-height: 1.6;
   margin: 0 0 20px;
+}
+.lede {
+  color: var(--muted, #8a7f72);
+  line-height: 1.6;
+  margin: 0 0 16px;
+  font-size: 1.02rem;
 }
 .card {
   background: var(--card-bg, #fff);
