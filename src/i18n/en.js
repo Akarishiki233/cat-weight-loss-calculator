@@ -49,7 +49,7 @@ export default {
     tipLose: "Weight-loss mode: feeding 80% of resting needs. Aim for 0.5–2% loss per week and check with your vet — never crash-diet a cat.", tipKitten: "Kittens are growing fast and need lots of energy. Feed kitten-formulated food and let your vet guide portions.", tipSenior: "Seniors (7+) often need fewer calories but more protein. Watch weight trends and ask your vet about senior formulas.",
     tipLow: "Indoor couch potatoes gain weight easily — measured meals (no free-feeding) make the biggest difference.", tipDefault: "Split the daily amount into 2–3 meals. Treats should stay under 10% of daily calories." },
   tracker: {
-    openSheet: "Download tracking sheet 📋", openCard: "Make share card 🎴",
+    openSheet: "Download tracking sheet 📋",
     modalTitle: "Cat Weight Management Log",
     catName: "Cat's name", catNamePh: "Optional — leave blank to handwrite",
     targetW: "Target weight", targetWPh: "Optional — leave blank to handwrite",
@@ -66,12 +66,6 @@ export default {
     hook: "Weigh in weekly — come back and update your plan",
     brandTag: "NEKOLIFE · CAT HEALTH",
     sheetDisclaimer: "This log is a tracking tool only and not a substitute for veterinary advice. Consult your vet before starting a weight-loss plan.",
-    cardTitle: "Cat weight-loss plan card",
-    cardPlan: "12-week plan",
-    cardStart: "START",
-    cardDl: "Download PNG ⬇️",
-    cardFrom: "Start", cardTo: "Goal",
-    cardHook: "Check in weekly — come back and update the plan",
   },
   faq: { title: "Common questions", items: [
     { q: "How many calories does a cat need per day?", a: "An average 4.5&nbsp;kg (10&nbsp;lb) neutered indoor cat needs roughly 200–280&nbsp;kcal per day. Kittens need much more for growth (about 2.5× their resting requirement), while seniors and couch potatoes need less. Use the calculator above for a personalized number." },

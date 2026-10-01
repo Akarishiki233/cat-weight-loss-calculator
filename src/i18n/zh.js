@@ -49,7 +49,7 @@ export default {
     tipLose: "减肥模式：按静息需求的 80% 喂食。每周减重 0.5–2% 为宜，请先咨询兽医——千万别让猫咪断食减肥。", tipKitten: "幼猫长得快，需要大量能量。请喂幼猫粮，具体份量听兽医的。", tipSenior: "7 岁以上的老年猫通常热量需求更低，但蛋白质需求更高。注意体重变化，可以咨询兽医换老年猫粮。",
     tipLow: "室内沙发土豆最容易发胖——定量喂食（不要自助任吃）是最有效的一招。", tipDefault: "每日分量分成 2–3 餐。零食别超过每日热量的 10%。" },
   tracker: {
-    openSheet: "下载记录表 📋", openCard: "生成分享卡 🎴",
+    openSheet: "下载记录表 📋",
     modalTitle: "猫咪体重管理记录表",
     catName: "猫咪名字", catNamePh: "选填，不填可手写",
     targetW: "目标体重", targetWPh: "选填，不填可手写",
@@ -66,12 +66,6 @@ export default {
     hook: "每周同一时间称重，回来更新你的计划",
     brandTag: "NEKOLIFE · 猫咪健康",
     sheetDisclaimer: "本表仅为记录工具，不能替代兽医诊断；开始减肥计划前请先咨询兽医。",
-    cardTitle: "猫咪减肥计划卡",
-    cardPlan: "12 周减肥计划",
-    cardStart: "起点",
-    cardDl: "下载 PNG ⬇️",
-    cardFrom: "起点", cardTo: "目标",
-    cardHook: "每周打卡，回来更新计划",
   },
   faq: { title: "常见问题", items: [
     { q: "猫咪每天需要多少热量？", a: "一只 4.5 公斤已绝育的室内猫，每天约需 200–280 千卡。幼猫长身体需要更多（约 2.5 倍静息需求），老年猫和沙发土豆则需要更少。用上面的猫咪热量计算器可以得出个性化结果。" },

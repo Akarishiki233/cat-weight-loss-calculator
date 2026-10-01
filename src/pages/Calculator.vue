@@ -9,7 +9,6 @@ import FoodSearch from '../components/FoodSearch.vue'
 import FaqSection from '../components/FaqSection.vue'
 import FeedbackForm from '../components/FeedbackForm.vue'
 import TrackerSheet from '../components/TrackerSheet.vue'
-import ShareCard from '../components/ShareCard.vue'
 import { calculate, toKg, fromKg, localeFromPath } from '../lib/calc.js'
 import { TOOL_IDS, toolI18nKey, toolPagePath } from '../lib/tool-pages.js'
 import { articlePagePath } from '../lib/article-pages.js'
@@ -107,7 +106,6 @@ const portionWidth = ref(0)
 const resultCard = ref(null)
 /* weight-tracker sheet + share card */
 const sheetOpen = ref(false)
-const cardOpen = ref(false)
 const petName = ref('')
 const targetW = ref('')
 const sheetWUnit = computed(() => (unit.value === 'kg' ? t('unit.kg') : t('unit.alt')))
@@ -322,7 +320,6 @@ const tipText = computed(() =>
       <div class="tip">{{ tipText }}</div>
       <div class="tracker-actions">
         <button class="tbtn" data-testid="tracker-open" @click="sheetOpen = true">📋 {{ t('tracker.openSheet') }}</button>
-        <button class="tbtn" data-testid="sharecard-open" @click="cardOpen = true">🎴 {{ t('tracker.openCard') }}</button>
       </div>
     </div>
   </div>
@@ -337,18 +334,6 @@ const tipText = computed(() =>
     :grams="sheetGrams"
     :date-str="sheetDate"
     @close="sheetOpen = false"
-    @update:pet-name="petName = $event"
-    @update:target-w="targetW = $event"
-  />
-  <ShareCard
-    v-if="result"
-    :open="cardOpen"
-    :pet-name="petName"
-    :target-w="targetW"
-    :start-w="sheetStartW"
-    :w-unit="sheetWUnit"
-    :date-str="sheetDate"
-    @close="cardOpen = false"
     @update:pet-name="petName = $event"
     @update:target-w="targetW = $event"
   />

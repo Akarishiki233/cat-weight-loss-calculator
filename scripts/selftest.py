@@ -595,14 +595,13 @@ for loc, aid, p in SEO_PAGES:
     h = (DIST / (p.lstrip('/') + 'index.html')).read_text(encoding='utf-8')
     check(f'{p}: no <img> (alt N/A by design)', '<img' not in h)
 
-print('== 14. weight tracker sheet + share card ==')
+print('== 14. weight tracker sheet ==')
 # 14a. tracker i18n keys complete across locales (parsed from the tracker: block).
-TRACKER_KEYS = ['openSheet','openCard','modalTitle','catName','catNamePh','targetW','targetWPh',
+TRACKER_KEYS = ['openSheet','modalTitle','catName','catNamePh','targetW','targetWPh',
     'printBtn','closeBtn','sheetTitle','sheetSub','pName','pStartW','pTargetW','pDate','pFood',
     'perDay','bcsTitle','bcsUnder','bcsIdeal','bcsOver','bcsObese','bcsNote',
     'thWeek','thDate','thWeight','thDelta','thBcs','thFood','thNote',
-    'safety','hook','brandTag','sheetDisclaimer',
-    'cardTitle','cardPlan','cardStart','cardDl','cardFrom','cardTo','cardHook']
+    'safety','hook','brandTag','sheetDisclaimer']
 for loc in ['en','zh','ja','ko']:
     src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
     m = re.search(r'tracker:\s*\{(.*?)\n  \},', src, re.S)
@@ -616,9 +615,7 @@ js_files = list((DIST / 'assets').glob('*.js'))
 check('built js exists', len(js_files) > 0)
 js = '\n'.join(f.read_text(encoding='utf-8') for f in js_files)
 check('js: tracker open button', 'tracker-open' in js)
-check('js: share card button', 'sharecard-open' in js)
 check('js: TrackerSheet component', 'tracker-modal' in js)
-check('js: ShareCard canvas', 'share-canvas' in js)
 # 14c. print isolation CSS present in the built stylesheet.
 css_files = list((DIST / 'assets').glob('*.css'))
 check('built css exists', len(css_files) > 0)
@@ -627,9 +624,7 @@ check('print CSS: @media print', '@media print' in css)
 check('print CSS: printing-sheet isolation', 'printing-sheet' in css)
 # the sheet modal is teleported to <body>, so the rule hides #app wholesale
 check('print CSS: hides #app when printing', 'printing-sheet #app' in css)
-# 14d. share-card model lib + BCS strip is pattern-encoded (B/W-print safe).
-sc = (ROOT / 'src/lib/share-card.js').read_text(encoding='utf-8')
-check('share-card.js: 1080 model', '1080' in sc and 'shareCardModel' in sc)
+# 14d. sheet BCS strip is pattern-encoded (B/W-print safe).
 ts = (ROOT / 'src/components/TrackerSheet.vue').read_text(encoding='utf-8')
 check('sheet: BCS pattern classes', all(c in ts for c in ['pat-dots','pat-ideal','pat-stripes','pat-cross']))
 check('sheet: no color-only BCS scale', '#7FB3D5' not in ts and '#58B368' not in ts)
