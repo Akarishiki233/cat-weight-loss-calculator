@@ -4,8 +4,15 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { localeFromPath } from '../lib/calc.js'
-import { articleI18nKey, articlePagePath } from '../lib/article-pages.js'
-import { toolPagePath } from '../lib/tool-pages.js'
+import {
+  articleI18nKey,
+  articlePagePath,
+  articleHreflangOf,
+  articleCtaPath,
+  ARTICLE_DATES,
+  ARTICLE_AUTHOR,
+  ARTICLE_LOCALES,
+} from '../lib/article-pages.js'
 
 const props = defineProps({ articleId: { type: String, required: true } })
 const { t, tm } = useI18n()
@@ -20,20 +27,36 @@ const sources = computed(() => tm(`${key.value}.sources`))
 const SITE = 'https://akarishiki233.github.io/cat-weight-loss-calculator'
 const path = computed(() => articlePagePath(locale.value, props.articleId))
 const homePath = computed(() => (locale.value === 'en' ? '/' : `/${locale.value}/`))
-const waterToolPath = computed(() => toolPagePath(locale.value, 'water'))
-const DATE_PUBLISHED = '2026-09-30'
+const ctaPath = computed(() => articleCtaPath(locale.value, props.articleId))
+const datePublished = computed(() => ARTICLE_DATES[props.articleId] || '2026-10-01')
+const articleLocales = computed(() => ARTICLE_LOCALES[props.articleId] || [locale.value])
+const xDefaultLocale = computed(() =>
+  articleLocales.value.includes('en') ? 'en' : articleLocales.value[0],
+)
 
 useHead({
-  htmlAttrs: { lang: computed(() => (locale.value === 'zh' ? 'zh-CN' : locale.value)) },
+  htmlAttrs: { lang: computed(() => articleHreflangOf(locale.value)) },
   title: computed(() => ak('title')),
   meta: [
     { name: 'description', content: computed(() => ak('metaDesc')) },
     { property: 'og:title', content: computed(() => ak('title')) },
     { property: 'og:description', content: computed(() => ak('metaDesc')) },
     { property: 'og:type', content: 'article' },
-    { property: 'article:published_time', content: DATE_PUBLISHED },
+    { property: 'article:published_time', content: datePublished },
   ],
-  link: [{ rel: 'canonical', href: computed(() => SITE + path.value) }],
+  link: [
+    { rel: 'canonical', href: computed(() => SITE + path.value) },
+    ...articleLocales.value.map((l) => ({
+      rel: 'alternate',
+      hreflang: articleHreflangOf(l),
+      href: SITE + articlePagePath(l, props.articleId),
+    })),
+    {
+      rel: 'alternate',
+      hreflang: 'x-default',
+      href: computed(() => SITE + articlePagePath(xDefaultLocale.value, props.articleId)),
+    },
+  ],
   script: [
     {
       type: 'application/ld+json',
@@ -43,9 +66,9 @@ useHead({
           '@type': 'Article',
           headline: ak('title'),
           description: ak('metaDesc'),
-          inLanguage: 'zh-CN',
-          datePublished: DATE_PUBLISHED,
-          author: { '@type': 'Organization', name: '猫咪喂食量计算器' },
+          inLanguage: articleHreflangOf(locale.value),
+          datePublished: datePublished.value,
+          author: { '@type': 'Organization', name: ARTICLE_AUTHOR[locale.value] },
           mainEntityOfPage: SITE + path.value,
         }),
       ),
@@ -109,7 +132,7 @@ useHead({
     <section class="card cta">
       <h2>{{ ak('ctaTitle') }}</h2>
       <p>{{ ak('ctaBody') }}</p>
-      <RouterLink class="btn" :to="waterToolPath">{{ ak('ctaBtn') }}</RouterLink>
+      <RouterLink class="btn" :to="ctaPath">{{ ak('ctaBtn') }}</RouterLink>
     </section>
 
     <section class="card">

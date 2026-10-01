@@ -88,10 +88,21 @@ export default {
     ctaBody: "Use the full calculator with your cat's weight, age, activity level and goal.",
     ctaBtn: "Open the calculator 🐾",
     relatedTitle: "Related feeding guides",
+    guideTitle: "Further reading",
+    guideBody: "Overwhelmed by dozens of cat foods on the shelf? This guide teaches you to read ME values and labels, and pick the right food for your cat's life stage.",
+    guideBtn: "Read the Cat Food Buying Guide"
   },
   tools: {
     title: "More cat tools",
     sub: "Free calculators for your cat's health."
+  },
+  guides: {
+    title: "Cat knowledge base",
+    sub: "In-depth original guides to help you raise a healthier cat.",
+    wlName: "Complete Guide to Cat Weight Loss",
+    wlTag: "Spotting obesity, safe loss speed and feeding plans",
+    cfName: "Cat Food Buying Guide",
+    cfTag: "Reading labels, ME values and portions"
   },
   toolwater: {
     name: "Water intake calculator",
@@ -231,6 +242,218 @@ export default {
     disclaimer: "Approximation for fun and planning. Individual cats age differently.",
     ctaTitle: "Senior cat? Watch the calories.",
     ctaBody: "Older cats often need fewer calories — calculate the right amount.",
-    ctaBtn: "Open the calorie calculator 🐾"
-  }
+    ctaBtn: "Open the calorie calculator 🐾",
+    guideTitle: "Further reading",
+    guideBody: "Cats enter their senior years at age 7, and diet, checkups and daily life all need adjusting. Our complete guide covers everything about senior cat care in one place.",
+    guideBtn: "Read the Senior Cat Care Guide"
+
+  },
+  articleguides_weightloss: {
+    title: "Cat Weight Loss Guide: Safe Diet Plan for Overweight Cats",
+    metaDesc: "A complete cat weight loss guide: BCS self-checks, safe fat loss of 1 to 2% per week, calorie plans by ideal weight, and maintenance tips to prevent rebound.",
+    dateLine: "Published 2026-10-01 · 8 min read",
+    lede: "Excess weight is one of the most common health problems in house cats, and one of the most overlooked. This guide walks you from spotting overweight to building a feeding plan, so your cat can slim down safely.",
+    crumbHome: "Home",
+    sections: [
+      {
+        h: "1. Is your cat really overweight?",
+        body: [
+          "Overweight means 10-20% above ideal body weight, and obesity means more than 20% over, according to VCA. A 2022 survey found 61% of cats in North America were overweight: extra weight is the norm for house cats, not the exception.",
+          "Vets judge body condition on a 9-point BCS scale, where 5 is ideal: you should see a waist from above and feel the ribs without seeing them. Weigh your cat at the same time each month and track the trend: the curve matters more than any single number."
+        ],
+        list: [
+          "Feel the ribs: easy to feel under a thin fat layer, not buried",
+          "Check the waist from above: a visible tuck, not a barrel shape",
+          "Look from the side: the belly tucks up slightly, not sagging",
+          "Weigh monthly and keep a weight chart"
+        ]
+      },
+      {
+        h: "2. Why obesity is dangerous for cats",
+        body: [
+          "Obesity is not just cute chubbiness: it is a chronic condition that shortens lives. Overweight cats face higher risks of diabetes, arthritis, urinary stones, and anesthesia complications.",
+          "The most dangerous risk is hepatic lipidosis, or fatty liver disease: if an obese cat stops eating for more than a day or two, fat floods the liver and it can be fatal. So your cat must keep eating every day during weight loss. Skipping meals is not a diet strategy for cats."
+        ],
+        list: [
+          "Diabetes: obesity is the top preventable risk factor",
+          "Arthritis: extra weight wears joints down faster",
+          "Urinary stones: less active and less water means higher risk",
+          "Hepatic lipidosis: fasting for 1-2 days can be fatal in obese cats"
+        ]
+      },
+      {
+        h: "3. Safe pace: slow is fast",
+        body: [
+          "A safe rate is about 1-2% of body weight per week. For a 6 kg cat, that is 60-120 grams a week. It looks slow, but it adds up to nearly a kilo in three months, with almost no rebound.",
+          "Cats cannot crash-diet like people. Too large a calorie deficit risks fatty liver, muscle loss, a dull coat, and low energy. Weight loss is a long game: slower is steadier."
+        ]
+      },
+      {
+        h: "4. Build the feeding plan around ideal weight",
+        body: [
+          "The key step: calculate calories from ideal weight, not current weight. First compute resting energy requirement, RER = 70 x weight in kg to the power of 0.75, then multiply by about 0.8 for weight loss. For a cat with an ideal weight of 5 kg, RER is about 234 kcal and the daily weight-loss target is about 187 kcal.",
+          "Do not just halve the current food. VCA warns that simply cutting back the existing diet leads to protein and micronutrient deficiencies. Work with your vet to pick a weight-loss formula or a measured plan, and weigh food in grams with a kitchen scale."
+        ]
+      },
+      {
+        h: "5. Make the plan stick: measure, schedule, enrich",
+        body: [
+          "Nine out of ten weight-loss attempts fail on execution. Split the daily ration into 2-3 scheduled meals and put away the all-day buffet. A kitchen scale is non-negotiable: the gap between 'about a cup' and 80 grams is exactly why the weight stalls.",
+          "Keep all treats under 10% of daily calories, feed multi-cat households separately, and add play: 10-15 minutes of wand play a day plus puzzle feeders burn calories for free."
+        ],
+        list: [
+          "Scheduled meals: 2-3 times a day, no free feeding",
+          "Weigh food in grams, never eyeball it",
+          "Treat limit: under 10% of daily calories",
+          "Multi-cat homes: feed separately to stop food stealing",
+          "10-15 minutes of interactive play plus puzzle feeders daily"
+        ]
+      },
+      {
+        h: "6. Maintenance: keeping it off",
+        body: [
+          "Do not go back to the old feeding habits the day your cat hits its target weight, or the pounds return within months. Maintenance calories are usually 10-20% above the weight-loss level. Keep weighing monthly and watch.",
+          "Keep the habits that worked: scheduled feeding, monthly weigh-ins, BCS self-checks. If weight climbs back more than 5%, dial the calories back early."
+        ]
+      }
+    ],
+    faqTitle: "Weight loss FAQ",
+    faqs: [
+      { q: "How soon will I see results from my cat's diet?", a: "At the safe pace of 1-2% per week, a 6 kg cat shows visible change in about 2-3 months. The scale is more honest than your eyes: weigh monthly and track the curve." },
+      { q: "Can I just cut my cat's food in half?", a: "No. VCA warns that simply reducing the current food causes micronutrient deficiencies. Work with your vet on a weight-loss formula or a measured plan, and weigh portions in grams." },
+      { q: "Can an obese cat fast to lose weight?", a: "Absolutely not. An obese cat that stops eating for more than 1-2 days can develop fatal hepatic lipidosis. Your cat must eat every day during weight loss: only the total calories are controlled." },
+      { q: "Can I still give treats?", a: "Yes, but all treats together should stay under 10% of daily calories. You can swap high-calorie treats for a few kibbles as training rewards." }
+    ],
+    sourcesTitle: "References",
+    sources: [
+      { name: "VCA Animal Hospitals: Obesity in Cats", url: "https://vcahospitals.com/know-your-pet/obesity-in-cats" },
+      { name: "FelineVMA (formerly AAFP) Feline Practice Guidelines", url: "https://catvets.com/guidelines/practice-guidelines/" }
+    ],
+    ctaTitle: "How much should your cat eat per day?",
+    ctaBody: "Enter the ideal weight to get the daily calorie target and grams to feed for the weight-loss phase.",
+    ctaBtn: "Open the cat weight loss calculator",
+    disclaimer: "This guide is for general information and everyday care only, and is not a substitute for veterinary diagnosis. Consult a licensed veterinarian with any health concerns."
+  },
+  articleguides_catfood: {
+    title: "Choosing the Best Cat Food: A Complete Guide to Cat Nutrition",
+    metaDesc: "Learn how to choose the best cat food: read labels, compare metabolizable energy and protein, pick wet vs dry, and feed by life stage. Skip the common mistakes.",
+    dateLine: "Published 2026-10-01 · 8 min read",
+    lede: "Shelves full of cat food can be overwhelming. This guide walks you through reading labels, choosing between wet and dry, feeding by life stage, calculating portions, transitioning foods, and avoiding common mistakes — so you can feed your cat with confidence.",
+    crumbHome: "Home",
+    sections: [
+      { h: "1. Read the numbers on the bag: metabolizable energy, protein, and fat", body: ["Before comparing brands, learn to read the guaranteed analysis panel. The three numbers that matter most are metabolizable energy (ME, in kcal/kg), crude protein, and crude fat — together they define the food's calorie density and nutritional backbone.", "Metabolizable energy tells you how many calories your cat can actually use. Two foods with similar protein levels can differ by hundreds of kcal/kg in ME, so feeding by cups or scoops can be way off. Calculating portions from ME is far more accurate.", "Treat the feeding guide on the package as a starting point only. It is calculated for an average cat, and your cat's age, body condition, and neuter status will shift the real number."] },
+      { h: "2. Dry vs wet food: no universal winner, only what suits your cat", body: ["Dry food is about 10 percent water. It is convenient, shelf-stable, and economical, but cats that drink little water can end up chronically under-hydrated. Wet food is about 75 to 80 percent water, which helps hydration a lot, but it needs refrigeration after opening and costs more.", "Many households mix both: dry food as the nutritional base, wet food as a hydrating top-up. The key is keeping the combined total within your cat's daily calorie needs.", "If your cat has a history of urinary issues or barely drinks, lean toward more wet food. When in doubt about ratios, ask your veterinarian rather than relying on forum opinions."], list: ["Cats that drink little: raise the wet food share", "On a budget: quality dry food plus a water routine", "Sensitive stomachs: settle on one stable food before mixing"] },
+      { h: "3. Feed by life stage: kittens, adults, and seniors need different things", body: ["Kittens grow fast and need higher protein and calorie density. Choose a kitten formula and feed it until about 12 months. Free-feeding kittens is not recommended — it easily leads to juvenile obesity.", "For adult cats, an adult formula plus weight control is the whole game. Neutered cats need fewer calories, and many cats start gaining weight right after neutering.", "Senior cats (from around 11 to 12 years) move less and may develop joint or kidney issues. Switch to a senior formula and adjust the diet with your veterinarian during regular checkups."] },
+      { h: "4. Portion sizes: the package guide is only a starting point", body: ["Package feeding guides assume an average cat. A better starting point is to calculate daily calories from your cat's target weight, then divide by the food's ME to get the grams per day.", "Adult cats should eat at least 2 meals a day on a schedule. Free-feeding (food always in the bowl) makes many cats overeat. Scheduled meals also help you notice appetite changes sooner — a sudden change in eating habits is often an early sign of illness.", "Recheck body condition after two or three weeks. If you cannot feel the ribs and the waistline is gone, cut back. If your cat keeps slimming down, add a little. Numbers guide you, but the cat's body has the final word."], list: ["Calculate daily calories from target weight with our calculator", "Divide by the food's ME (kcal/kg) to get daily grams", "Split into 2 to 3 scheduled meals, adjust after a few weeks"] },
+      { h: "5. Transition slowly: the 7 to 10 day method", body: ["Cats have sensitive stomachs, and switching foods overnight often causes diarrhea or food refusal. Transition over 7 to 10 days: new food at one quarter for days 1 to 3, then raise the share every 2 to 3 days until fully switched.", "If stools soften during the transition, do not panic and revert. Drop back to the previous ratio, hold for two days, then continue. If diarrhea lasts more than two days or your cat seems off, stop and consult your veterinarian.", "Use the transition as an observation window: note palatability, stool quality, and coat condition."] },
+      { h: "6. Treats, myths, and saving money the right way", body: ["Keep treats (including freeze-dried snacks) under 10 percent of daily calories, or the balanced nutrition of the main diet gets skewed. A few kibbles set aside from meals work just as well for training rewards.", "Common myths, corrected: higher protein is not automatically better — excess protein is not ideal for senior cats with kidney strain. Expensive does not mean better — read the guaranteed analysis and watch real results instead of the price tag. Wet food is not automatically superior to dry — it depends on the product and whether your cat will eat it.", "The honest way to save money is buying bigger bags with airtight storage and watching for official-channel promotions — not buying unbranded bulk food of unknown origin. Once opened, keep food dry and sealed, and discard it if it smells rancid."], list: ["Keep treats under 10 percent of daily calories", "Ignore marketing buzzwords like natural or grain-free; read the guaranteed analysis", "Big bags plus an airtight container; watch the shelf life after opening"] }
+    ],
+    faqTitle: "Cat food FAQ",
+    faqs: [
+      { q: "How do I choose cat food — brand or ingredients first?", a: "Ingredients and the guaranteed analysis come first, brand reputation second. Check that ME, crude protein, and crude fat suit your cat's life stage, then judge by real results: body condition, coat, and stool quality. Brand is a bonus, not the deciding factor." },
+      { q: "Is wet food better than dry food?", a: "Neither wins outright. Wet food is about 75 to 80 percent water and suits cats that drink little; dry food is about 10 percent water and is convenient and economical. Many households mix both — the key is keeping total calories within the daily need." },
+      { q: "How much cat food should I feed per day?", a: "The package guide is only a starting point. Calculate daily calories from your cat's target weight, divide by the food's ME (kcal/kg) to get grams, split into 2 to 3 scheduled meals, and fine-tune after a few weeks based on body condition. Our calculator does the math for you." },
+      { q: "My cat has diarrhea after switching food — what should I do?", a: "Most likely the switch was too fast. Use the 7 to 10 day transition; if stools soften, step back to the previous ratio for two days. If diarrhea lasts more than two days, or your cat refuses food or seems unwell, stop and consult your veterinarian." }
+    ],
+    sourcesTitle: "References",
+    sources: [
+      { name: "VCA Animal Hospitals: Feeding Times and Frequency for Cats", url: "https://vcahospitals.com/know-your-pet/feeding-times-and-frequency-for-cats" },
+      { name: "FelineVMA (formerly AAFP) Feline Practice Guidelines", url: "https://catvets.com/guidelines/practice-guidelines/" }
+    ],
+    ctaTitle: "Check your cat food's calories",
+    ctaBody: "Our database covers the metabolizable energy of 35 cat foods. Search your brand and the calories fill in automatically — then pair it with the calculator to get exact daily portions.",
+    ctaBtn: "Search the cat food database",
+    disclaimer: "This guide is for general information and everyday care only, and is not a substitute for veterinary diagnosis. Consult a licensed veterinarian with any health concerns."
+  },
+  articleguides_senior: {
+    title: "Senior Cat Care: A Complete Guide for Cats Aged 7 and Older",
+    metaDesc: "From age 7, a cat is a senior. This senior cat care guide covers diet changes, twice-yearly vet checks, warning signs, and home tweaks for an aging cat.",
+    dateLine: "Published 2026-10-01 · 7 min read",
+    lede: "Age 7 is a turning point in a cat's life. From here on, your cat is officially a senior: jumping less, eating a little less, sleeping a lot more. Most of these changes are normal aging, but some can hide early disease. This guide covers it all — diet, vet care, home setup, and companionship — so your older cat's golden years are comfortable and dignified.",
+    crumbHome: "Home",
+    sections: [
+      {
+        h: "1. When is a cat considered a senior: the 7-year line",
+        body: [
+          "Veterinary consensus puts the senior threshold at 7 years and up. Our own cat age converter uses the same split: under 1 is a kitten, 1 to 7 is an adult, and 7-plus is a senior.",
+          "The 7-year line is not arbitrary. Around this age a cat's metabolism, immune function, and organ performance start declining noticeably, and many chronic conditions — kidney disease, hyperthyroidism, and others — tend to surface. Knowing your cat is 'old' lets you act early instead of reacting late.",
+          "Curious how old your cat is in human years? Run it through our cat age calculator and see which life stage it is in."
+        ]
+      },
+      {
+        h: "2. What is changing inside your aging cat's body",
+        body: [
+          "The first thing owners notice is muscle: the hind legs and spine slowly get thinner, and weight may quietly drop. This is not just 'eating less' — aging brings real muscle wasting, and digestion absorbs less from food.",
+          "The senses fade too: vision, hearing, and smell all dull. That is why some older cats suddenly go 'off' their usual food — they may simply not smell it well anymore. Joints stiffen, jumping becomes hesitant, and even using the litter box can turn into an effort.",
+          "As metabolism slows, chronic disease risk climbs: kidney disease, hyperthyroidism, diabetes, arthritis, and cognitive decline similar to human dementia. These conditions are quiet at first, which makes regular vet checks almost the only way to catch them early."
+        ]
+      },
+      {
+        h: "3. Diet adjustments: smaller, more frequent, easy to digest",
+        body: [
+          "Senior cats usually have smaller appetites and weaker digestion. Three to four small meals a day beats two big ones: it is gentler on the gut and lets you track exactly how much is eaten at each meal — one of the earliest clues that something is wrong.",
+          "Choose food that is easy to digest, with good-quality protein and strong palatability. For cats with bad teeth, soak dry food until soft or raise the share of wet food — wet food is also higher in moisture, which is kinder to aging kidneys. Transition foods slowly over 7 to 10 days; a senior stomach does not forgive abrupt switches.",
+          "Weight is the single most useful health gauge for an older cat. Weigh it once a month on a fixed day (step on the scale holding the cat, then subtract your own weight) and write it down. Slow weight loss can be aging — or an early sign of hyperthyroidism, kidney disease, or diabetes. Do not guess; bring the log to your vet."
+        ],
+        list: [
+          "Scheduled feeding: same times, measured portions, leftovers picked up — so appetite changes stand out fast.",
+          "Make water easy: several bowls in different spots, away from food bowls and the litter box. Easier drinking means less strain on the kidneys.",
+          "Skip random supplements: ask your vet before adding nutritional pastes or powders — the wrong supplement can burden the kidneys and liver."
+        ]
+      },
+      {
+        h: "4. Vet checks and warning signs: at least twice a year",
+        body: [
+          "The FelineVMA (formerly AAFP) 2021 Feline Senior Care guidelines recommend stepping up checkup frequency for older cats: at least twice a year. Many senior conditions show no obvious symptoms early, and by the time an owner notices, the disease has often progressed. A check every six months catches problems earlier.",
+          "A senior checkup typically covers weight trends, blood pressure, and blood and urine tests, adjusted to the cat's age and history. Do not skip it just because your cat 'looks fine' — cats are masters at hiding pain, and by the time they show it, things may be serious.",
+          "At home, be the daily monitor. Eating, drinking, litter habits, activity, favorite sleeping spots — a sudden change in any of these is a signal. VCA Hospitals also notes that a regular feeding routine makes abnormalities visible sooner, which matters even more for seniors."
+        ],
+        list: [
+          "Sudden appetite loss or surge, or a clear change in water intake — book a vet visit soon.",
+          "Noticeable weight drop within a month, or visibly thinning hind legs — do not write it off as 'just old'.",
+          "Hesitant jumping, stiff walking, trouble with stairs — possible arthritis.",
+          "Nighttime yowling, going outside the litter box, not recognizing family — possible cognitive decline.",
+          "Vomiting, diarrhea, worsening bad breath, or a rough coat that does not improve for two weeks — all worth a check."
+        ]
+      },
+      {
+        h: "5. Home setup: 6 changes that make a senior cat comfortable",
+        body: [
+          "Older cats tolerate change less and less — the more stable the environment, the calmer they feel. These tweaks cost little but genuinely raise quality of life:"
+        ],
+        list: [
+          "Low-entry litter box: switch to one with a low front, or cut a lower entry into the current box, so arthritic cats can get in and out without a struggle.",
+          "Anti-slip: put non-slip mats along favorite routes and around the litter box and water bowls — a fall is a serious injury for old bones.",
+          "Warm resting spots: senior cats feel the cold. Move the favorite bed somewhere draft-free and warm, reachable without jumping; a thermostat-controlled pet heating pad helps in winter.",
+          "Zero-barrier water: keep bowls on the floors and in the rooms your cat actually uses — no stair climbing just to drink. Wide, shallow bowls are kinder to whiskers.",
+          "Raise the food bowl slightly: elevating it to about chest height eases the neck and joints during meals.",
+          "Keep the 'old layout': do not move the bed, litter box, or bowls on a whim. Seniors navigate by memory and habit; reshuffling the furniture makes them anxious."
+        ]
+      },
+      {
+        h: "6. Companionship and quality of life: routine, patience, and a little readiness",
+        body: [
+          "What a senior cat needs most is predictability: fixed feeding times, fixed playtime, familiar people. It may not play hard anymore, but a few minutes of gentle interaction each day — brushing, petting, a slow wand toy — still keeps muscles and mood up.",
+          "Bring extra patience: it may not hear you call, may yowl at night, may miss the litter box now and then. Most of this is aging, not misbehavior. Punishment only adds anxiety; adjusting the environment (an extra litter box, a night light left on) works far better than scolding.",
+          "Finally, the lesson every senior-cat owner eventually faces: learn the quality-of-life yardsticks for euthanasia decisions in advance (such as lasting pain that cannot be relieved, or a complete loss of joy in life) and talk them through with your vet. This is not cursing your cat — it is how you make a clear, regret-free decision for it when that day truly comes."
+        ]
+      }
+    ],
+    faqTitle: "Senior cat FAQ",
+    faqs: [
+      { q: "My older cat suddenly stopped eating. Is that urgent?", a: "Yes. A cat that goes 24 to 48 hours without eating risks fatty liver disease, and the risk is higher in seniors. Check the water and food for spoilage, look for big environmental changes, and watch for lethargy or vomiting. If it still will not eat after a day, or anything else seems off, see a vet — do not wait it out." },
+      { q: "My senior cat keeps getting thinner. Is that normal?", a: "Slow, small weight loss can be part of aging, but steady ongoing loss is not. Hyperthyroidism, kidney disease, and diabetes all slim senior cats down. Weigh monthly, keep a log, and bring the trend to your vet — a weight chart says far more than 'it looks thinner'." },
+      { q: "Should I switch to a senior cat food?", a: "It is a good idea. Senior formulas are usually easier to digest, lower in phosphorus (kinder to kidneys), and moderately calorie-dense. Transition over 7 to 10 days. If your cat already has diagnosed kidney disease or another chronic condition, follow your vet on food — it may need a prescription diet." },
+      { q: "My old cat yowls at night and seems lost indoors. Is it dementia?", a: "It could be cognitive decline, but hyperthyroidism, high blood pressure, or pain such as arthritis can cause the same signs. Start with a full vet checkup to rule out treatable causes. If it is cognitive, a stable environment, a night light, and a fixed routine help a lot." }
+    ],
+    sourcesTitle: "References",
+    sources: [
+      { name: "FelineVMA (formerly AAFP) feline practice guidelines, incl. 2021 Feline Senior Care guidelines", url: "https://catvets.com/guidelines/practice-guidelines/" },
+      { name: "VCA Hospitals: Feeding Times and Frequency for Cats", url: "https://vcahospitals.com/know-your-pet/feeding-times-and-frequency-for-cats" }
+    ],
+    ctaTitle: "How old is your cat in human years?",
+    ctaBody: "Enter your cat's age and instantly see its human-age equivalent, plus whether it is a kitten, adult, or senior.",
+    ctaBtn: "Open the cat age calculator",
+    disclaimer: "This guide is for general information and everyday care only, and is not a substitute for veterinary diagnosis. Consult a licensed veterinarian with any health concerns."
+  },
 }

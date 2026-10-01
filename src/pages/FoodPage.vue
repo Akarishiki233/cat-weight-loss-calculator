@@ -5,6 +5,7 @@ import { useRoute, RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { rer, localeFromPath, foodBrand, foodProduct } from '../lib/calc.js'
 import { pageLocales, foodPagePath } from '../lib/food-pages.js'
+import { articlePagePath } from '../lib/article-pages.js'
 import foodsData from '../data/cat-foods.json'
 
 const props = defineProps({ foodId: { type: String, required: true } })
@@ -12,6 +13,7 @@ const { t } = useI18n()
 const route = useRoute()
 const locale = computed(() => localeFromPath(route.path))
 const isZh = computed(() => locale.value === 'zh')
+const catfoodGuidePath = computed(() => articlePagePath(locale.value, 'catfood'))
 
 const food = computed(() => foodsData.foods.find((f) => f.id === props.foodId))
 const name = computed(() => {
@@ -158,6 +160,12 @@ useHead({
       </div>
     </section>
 
+    <section class="card read-more">
+      <h2>{{ t('food.guideTitle') }}</h2>
+      <p>{{ t('food.guideBody') }}</p>
+      <RouterLink class="btn btn-outline" :to="catfoodGuidePath">{{ t('food.guideBtn') }}</RouterLink>
+    </section>
+
     <p class="disclaimer">{{ t('food.disclaimer') }}</p>
 
     <section class="card">
@@ -280,5 +288,10 @@ h1 {
   color: #fff;
   font-weight: 700;
   text-decoration: none;
+}
+.btn-outline {
+  background: transparent;
+  color: var(--accent, #e07b39);
+  border: 1.5px solid var(--accent, #e07b39);
 }
 </style>

@@ -10,6 +10,7 @@ import FaqSection from '../components/FaqSection.vue'
 import FeedbackForm from '../components/FeedbackForm.vue'
 import { calculate, toKg, fromKg, localeFromPath } from '../lib/calc.js'
 import { TOOL_IDS, toolI18nKey, toolPagePath } from '../lib/tool-pages.js'
+import { articlePagePath } from '../lib/article-pages.js'
 
 const { t, tm } = useI18n()
 const route = useRoute()
@@ -23,6 +24,20 @@ const toolsLinks = computed(() =>
     path: toolPagePath(locale.value, id),
   })),
 )
+
+/* Long-form guide articles paired with this calculator (internal linking). */
+const guideLinks = computed(() => [
+  {
+    name: t('guides.wlName'),
+    tagline: t('guides.wlTag'),
+    path: articlePagePath(locale.value, 'weightloss'),
+  },
+  {
+    name: t('guides.cfName'),
+    tagline: t('guides.cfTag'),
+    path: articlePagePath(locale.value, 'catfood'),
+  },
+])
 
 /* ---------------- SEO head (per locale, prerendered by vite-ssg) ---------------- */
 const SITE = 'https://akarishiki233.github.io/cat-weight-loss-calculator'
@@ -299,6 +314,17 @@ const tipText = computed(() =>
       <RouterLink v-for="tl in toolsLinks" :key="tl.path" :to="tl.path" class="tool-card">
         <b>{{ tl.name }}</b>
         <span>{{ tl.tagline }}</span>
+      </RouterLink>
+    </div>
+  </section>
+
+  <section v-reveal class="more-foods">
+    <h2>{{ t('guides.title') }}</h2>
+    <p class="sub">{{ t('guides.sub') }}</p>
+    <div class="tool-cards">
+      <RouterLink v-for="gl in guideLinks" :key="gl.path" :to="gl.path" class="tool-card">
+        <b>{{ gl.name }}</b>
+        <span>{{ gl.tagline }}</span>
       </RouterLink>
     </div>
   </section>

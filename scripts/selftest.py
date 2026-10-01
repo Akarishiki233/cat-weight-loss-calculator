@@ -8,6 +8,7 @@ import json
 import re
 import subprocess
 import sys
+import datetime
 import html as html_lib
 from pathlib import Path
 
@@ -24,6 +25,19 @@ def check(name, cond, extra=''):
 
 def run(cmd):
     return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+
+
+def top_block(src, key):
+    """Extract the body of a top-level i18n block, wherever it sits in the file.
+
+    (Older checks anchored on `\\n  }\\n}` assumed the block was last; article
+    blocks are now appended after, so match the block's own 2-space closing.)
+    """
+    m = re.search(rf'^  {key}: \{{$\n', src, re.M)
+    if not m:
+        return None
+    m2 = re.search(r'\n  \},?\n', src[m.end():])
+    return src[m.end():m.end() + m2.start()] if m2 else None
 
 
 print('== 1. build ==')
@@ -113,7 +127,7 @@ print('== 3. dist static files ==')
 for f in ['sitemap.xml', 'robots.txt', '404.html', 'google0caa8c740c641dd9.html', 'data/cat-foods.json']:
     check(f'dist/{f} exists', (DIST / f).exists())
 sm = (DIST / 'sitemap.xml').read_text() if (DIST / 'sitemap.xml').exists() else ''
-check('sitemap has 136 urls (4 mains + 119 food pages + 12 tool pages + 1 article)', sm.count('<loc>') == 136, f'found {sm.count("<loc>")}')
+check('sitemap has 148 urls (4 mains + 119 food pages + 12 tool pages + 13 articles)', sm.count('<loc>') == 148, f'found {sm.count("<loc>")}')
 
 print('== 4. i18n integrity ==')
 for loc in ['en', 'zh', 'ja', 'ko']:
@@ -248,7 +262,7 @@ for loc in ['en', 'ja', 'ko']:
 
 # sitemap covers all food pages + 4 mains.
 sm = (ROOT / 'public/sitemap.xml').read_text(encoding='utf-8')
-check('sitemap 136 urls', sm.count('<url>') == 136, f'got {sm.count("<url>")}')
+check('sitemap 148 urls', sm.count('<url>') == 148, f'got {sm.count("<url>")}')
 check('sitemap has food urls', all(f'<loc>{SITE}{p["path"]}</loc>' in sm for p in pages))
 
 # i18n food-key parity across locales.
@@ -258,8 +272,8 @@ FOOD_KEYS = ['title', 'metaDesc', 'kcalLabel', 'perKg', 'note', 'tableTitle', 't
              'relatedTitle']
 for loc in ['en', 'zh', 'ja', 'ko']:
     src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
-    m = re.search(r'food:\s*\{(.*?)\n  \}\n\}', src, re.S)
-    missing_keys = [k for k in FOOD_KEYS if not m or f'{k}:' not in m.group(1)]
+    blk = top_block(src, 'food')
+    missing_keys = [k for k in FOOD_KEYS if not blk or f'{k}:' not in blk]
     check(f'{loc}.js: food keys complete', not missing_keys, f'missing {missing_keys}' if missing_keys else '')
 
 # Each food page links to 4 related feeding guides (same market, same brand first).
@@ -310,8 +324,8 @@ for tid in TOOL_IDS:
         # Interactive widget must render above the intro copy (first screen).
         # NOTE: SSR HTML-escapes quotes (don't -> don&#39;t), so unescape first.
         src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
-        tm = re.search(rf'tool{tid}:\s*\{{(.*?)\n  \}}\n\}}', src, re.S)
-        intro_m = re.search(r'intro:\s*"((?:[^"\\]|\\.)*)"', tm.group(1)) if tm else None
+        tm_body = top_block(src, f'tool{tid}')
+        intro_m = re.search(r'intro:\s*"((?:[^"\\]|\\.)*)"', tm_body) if tm_body else None
         if intro_m:
             # Normalize whitespace: SSR pretty-printing injects newlines/indentation
             # around the interpolated text.
@@ -381,12 +395,12 @@ TOOL_EXTRA_KEYS = {
 }
 for loc in TOOL_LOCALES:
     src = (ROOT / f'src/i18n/{loc}.js').read_text(encoding='utf-8')
-    m = re.search(r'tools:\s*\{(.*?)\n  \}\n\}', src, re.S)
-    missing = [k for k in ['title', 'sub'] if not m or f'{k}:' not in m.group(1)]
+    blk = top_block(src, 'tools')
+    missing = [k for k in ['title', 'sub'] if not blk or f'{k}:' not in blk]
     check(f'{loc}.js: tools hub keys complete', not missing, f'missing {missing}' if missing else '')
     for tkey, extra in TOOL_EXTRA_KEYS.items():
-        m = re.search(rf'{tkey}:\s*\{{(.*?)\n  \}}\n\}}', src, re.S)
-        missing = [k for k in TOOL_BASE_KEYS + extra if not m or f'{k}:' not in m.group(1)]
+        blk = top_block(src, tkey)
+        missing = [k for k in TOOL_BASE_KEYS + extra if not blk or f'{k}:' not in blk]
         check(f'{loc}.js: {tkey} keys complete', not missing, f'missing {missing}' if missing else '')
 
 # Calculator page links to all 3 tools per locale.
@@ -396,36 +410,95 @@ for loc, path in [('en', 'index.html'), ('zh', 'zh/index.html'),
     for tid in TOOL_IDS:
         check(f'{loc} calculator links tool {tid}', f'/{tid}/' in html)
 
-print('== 10. guide articles (zh-first) ==')
+print('== 10. guide articles (13 pages: water zh + 3 guides × 4 locales) ==')
 ARTICLE_PAGES = [('zh', 'water', '/zh/guides/water/')]
+for _aid in ['weightloss', 'catfood', 'senior']:
+    for _loc in ['en', 'zh', 'ja', 'ko']:
+        ARTICLE_PAGES.append((_loc, _aid, ('' if _loc == 'en' else f'/{_loc}') + f'/guides/{_aid}/'))
+
+ARTICLE_TITLE_KW = {
+    'water': {'zh': '猫咪饮水完全指南'},
+    'weightloss': {'en': 'Cat Weight Loss', 'zh': '猫咪减肥', 'ja': '猫ダイエット', 'ko': '고양이 다이어트'},
+    'catfood': {'en': 'Cat Food', 'zh': '猫粮', 'ja': 'キャットフード', 'ko': '고양이 사료'},
+    'senior': {'en': 'Senior Cat', 'zh': '老年猫', 'ja': 'シニア猫', 'ko': '노묘'},
+}
+ARTICLE_DISCLAIMER_KW = {
+    'en': 'not a substitute for veterinary diagnosis',
+    'zh': '不能替代兽医诊断',
+    'ja': '獣医師の診断に代わるものではありません',
+    'ko': '수의사의 진단을 대신할 수 없습니다',
+}
+# Keyword-rich CTA anchor text per article/locale (SEO: no "click here").
+ARTICLE_CTA_KW = {
+    'water': {'zh': '饮水量计算器'},
+    'weightloss': {'en': 'Weight Loss Calculator', 'zh': '猫咪减肥计算器', 'ja': 'ダイエット', 'ko': '다이어트'},
+    'catfood': {'en': 'cat food', 'zh': '猫粮', 'ja': 'キャットフード', 'ko': '사료'},
+    'senior': {'en': 'Cat Age', 'zh': '猫咪年龄', 'ja': '年齢', 'ko': '나이'},
+}
+
+def article_cta_href(loc, aid):
+    """Expected CTA destination href suffix for an article page."""
+    if aid == 'water':
+        return ('' if loc == 'en' else f'/{loc}') + '/water/'
+    if aid == 'senior':
+        return ('' if loc == 'en' else f'/{loc}') + '/age/'
+    return '/cat-weight-loss-calculator' + ('' if loc == 'en' else f'/{loc}') + '/'
+
+def btn_hrefs(html):
+    out = re.findall(r'<a[^>]*class="btn"[^>]*href="([^"]+)"', html)
+    out += re.findall(r'<a[^>]*href="([^"]+)"[^>]*class="btn"', html)
+    return out
+
 for loc, aid, p in ARTICLE_PAGES:
     fp = DIST / (p.lstrip('/') + 'index.html')
     check(f'article exists: {p}', fp.exists())
     if not fp.exists():
         continue
     html = fp.read_text(encoding='utf-8')
-    check(f'{p}: title', '猫咪饮水完全指南' in html)
-    check(f'{p}: meta description', '50ml/kg' in html)
+    check(f'{p}: title keyword', ARTICLE_TITLE_KW[aid][loc] in html)
     check(f'{p}: canonical', f'href="{SITE}{p}"' in html)
     check(f'{p}: Article JSON-LD', '"@type":"Article"' in html or '"@type": "Article"' in html)
     check(f'{p}: BreadcrumbList JSON-LD', 'BreadcrumbList' in html)
     n_q = html.count('"@type": "Question"') + html.count('"@type":"Question"')
     check(f'{p}: FAQ has 4 questions', n_q == 4, f'got {n_q}')
-    check(f'{p}: 5 content sections', html.count('class="card"') >= 7)  # 5 sections + faq + sources (+ cta uses "card cta")
-    check(f'{p}: links to water tool', '/zh/water/' in html)
-    check(f'{p}: sources cite Cornell', 'vet.cornell.edu' in html)
-    check(f'{p}: disclaimer', '不能替代兽医诊断' in html)
+    n_sections = 5 if aid == 'water' else 6
+    check(f'{p}: {n_sections} content sections', html.count('class="card"') >= n_sections + 2)
+    check(f'{p}: keyword CTA anchor', ARTICLE_CTA_KW[aid][loc].lower() in html.lower())
+    check(f'{p}: CTA href', any(h.endswith(article_cta_href(loc, aid)) for h in btn_hrefs(html)),
+          f'want *{article_cta_href(loc, aid)}')
+    # SSR pretty-prints/wraps long CJK strings: compare whitespace-stripped.
+    flat = re.sub(r'\s+', '', html_lib.unescape(html))
+    check(f'{p}: disclaimer', re.sub(r'\s+', '', ARTICLE_DISCLAIMER_KW[loc]) in flat)
+    # hreflang: water is zh-only (1 alternate + x-default); new guides ×4 + x-default.
+    check(f'{p}: hreflang count', html.count('hreflang=') == (2 if aid == 'water' else 5),
+          f'got {html.count("hreflang=")}')
 # zh water tool page links out to the guide (interlinking).
 html = (DIST / 'zh/water/index.html').read_text(encoding='utf-8')
 check('zh water tool links to guide', '/zh/guides/water/' in html)
 check('zh water tool has read-more card', '延伸阅读' in html)
-# Other locales must NOT render the read-more card (article is zh-only for now).
+# Other locales must NOT render the water read-more card (article is zh-only for now).
 for loc, wpath in [('en', 'water/index.html'), ('ja', 'ja/water/index.html'),
                    ('ko', 'ko/water/index.html')]:
     h = (DIST / wpath).read_text(encoding='utf-8')
     check(f'{loc} water tool has no read-more card', 'read-more' not in h)
-# sitemap covers the article.
-check('sitemap has article url', f'<loc>{SITE}/zh/guides/water/</loc>' in sm)
+# age tool pages (all 4 locales) link to the senior guide.
+for loc, apath in [('en', 'age/index.html'), ('zh', 'zh/age/index.html'),
+                   ('ja', 'ja/age/index.html'), ('ko', 'ko/age/index.html')]:
+    h = (DIST / apath).read_text(encoding='utf-8')
+    check(f'{loc} age tool links to senior guide', '/guides/senior/' in h)
+# calculator pages (all 4 locales) link to the weightloss + catfood guides.
+for loc, cpath in [('en', 'index.html'), ('zh', 'zh/index.html'),
+                   ('ja', 'ja/index.html'), ('ko', 'ko/index.html')]:
+    h = (DIST / cpath).read_text(encoding='utf-8')
+    check(f'{loc} calculator links weightloss guide', '/guides/weightloss/' in h)
+    check(f'{loc} calculator links catfood guide', '/guides/catfood/' in h)
+# food pages link to the catfood guide (spot-check zh + en).
+for fpath in ['zh/foods/acana-indoor-entree/index.html', 'foods/acana-indoor-entree/index.html']:
+    h = (DIST / fpath).read_text(encoding='utf-8')
+    check(f'{fpath}: links to catfood guide', '/guides/catfood/' in h)
+# sitemap covers all 13 article urls.
+check('sitemap has article urls',
+      all(f'<loc>{SITE}{p}</loc>' in sm for _, _, p in ARTICLE_PAGES))
 
 print('== 11. router scroll behavior ==')
 main_js = (ROOT / 'src/main.js').read_text(encoding='utf-8')
@@ -449,6 +522,78 @@ for spot, desc in [('zh/water/index.html', 'tool page'), ('zh/foods/acana-indoor
     if fp.exists():
         h = fp.read_text(encoding='utf-8')
         check(f'{desc} has visible .card markup', 'class="card' in h)
+
+print('== 13. SEO checklist (3 new guides × 4 locales) ==')
+SEO_PAGES = [(loc, aid, p) for (loc, aid, p) in ARTICLE_PAGES if aid != 'water']
+seen_desc = {}
+for loc, aid, p in SEO_PAGES:
+    fp = DIST / (p.lstrip('/') + 'index.html')
+    html = fp.read_text(encoding='utf-8')
+    # 1-2. meta description: present, independent per locale, displayable length.
+    # (SSR pretty-prints attributes across lines — match the tag, then content.)
+    mtag = re.search(r'<meta[^>]*name="description"[^>]*>', html, re.S)
+    m = re.search(r'content="([^"]*)"', mtag.group(0), re.S) if mtag else None
+    desc = html_lib.unescape(m.group(1)) if m else ''
+    desc = re.sub(r'\s+', ' ', desc).strip()
+    check(f'{p}: meta description present', bool(desc))
+    maxlen = 160 if loc == 'en' else 80
+    check(f'{p}: meta description length 1..{maxlen}', 0 < len(desc) <= maxlen, f'got {len(desc)}')
+    seen_desc.setdefault(aid, {})[loc] = desc
+    # 3. canonical self-reference; hreflang 4-way + x-default.
+    # (useHead renders one attribute per line — parse per <link> tag.)
+    link_tags = re.findall(r'<link[^>]*>', html, re.S)
+
+    def has_link(**attrs):
+        return any(all(f'{k}="{v}"' in tag for k, v in attrs.items()) for tag in link_tags)
+
+    check(f'{p}: canonical self', has_link(rel='canonical', href=f'{SITE}{p}'))
+    check(f'{p}: hreflang ×5', html.count('hreflang=') == 5)
+    check(f'{p}: x-default present', has_link(hreflang='x-default'))
+    check(f'{p}: x-default → en page', has_link(hreflang='x-default', href=f'{SITE}/guides/{aid}/'))
+    for l in ['en', 'zh', 'ja', 'ko']:
+        hl = 'zh-CN' if l == 'zh' else l
+        exp = SITE + ('' if l == 'en' else f'/{l}') + f'/guides/{aid}/'
+        check(f'{p}: hreflang {hl}', has_link(hreflang=hl, href=exp))
+    # 6. no noindex; robots allows crawling.
+    check(f'{p}: no noindex', 'noindex' not in html.lower())
+    # 5. JSON-LD vs Google Rich Results: Article required fields.
+    ld = []
+    for blob in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
+        try:
+            ld.append(json.loads(html_lib.unescape(blob)))
+        except json.JSONDecodeError:
+            pass
+    article = next((d for d in ld if isinstance(d, dict) and d.get('@type') == 'Article'), None)
+    check(f'{p}: Article JSON-LD parses', article is not None)
+    if article:
+        for f in ['headline', 'description', 'inLanguage', 'datePublished', 'author', 'mainEntityOfPage']:
+            check(f'{p}: Article.{f}', f in article and bool(article[f]))
+        check(f'{p}: Article.datePublished', article.get('datePublished') == '2026-10-01')
+        check(f'{p}: Article.inLanguage', article.get('inLanguage') == ('zh-CN' if loc == 'zh' else loc))
+        check(f'{p}: Article.mainEntityOfPage self', article.get('mainEntityOfPage') == SITE + p)
+    # 5b. FAQPage questions must match the visible FAQs exactly.
+    faq = next((d for d in ld if isinstance(d, dict) and d.get('@type') == 'FAQPage'), None)
+    norm = lambda s: re.sub(r'\s+', ' ', html_lib.unescape(s)).strip()
+    visible_qs = [norm(q) for q in re.findall(r'<h3[^>]*>(.*?)</h3>', html, re.S)]
+    check(f'{p}: 4 visible FAQs', len(visible_qs) == 4, f'got {len(visible_qs)}')
+    check(f'{p}: FAQPage present', faq is not None)
+    if faq:
+        ld_qs = [norm(e.get('name', '')) for e in faq.get('mainEntity', [])]
+        check(f'{p}: FAQPage matches visible FAQs', ld_qs == visible_qs)
+# meta descriptions must differ per locale (no cross-locale template reuse).
+for aid, descs in seen_desc.items():
+    check(f'{aid}: meta descriptions unique per locale', len(set(descs.values())) == 4)
+robots = (ROOT / 'public/robots.txt').read_text(encoding='utf-8')
+check('robots allows /guides/', 'Disallow: /guides' not in robots)
+# sitemap lastmod = today for the 12 new urls.
+today = datetime.date.today().isoformat()
+for loc, aid, p in SEO_PAGES:
+    m = re.search(r'<loc>' + re.escape(SITE + p) + r'</loc>\s*<lastmod>([^<]*)</lastmod>', sm)
+    check(f'sitemap lastmod today: {p}', bool(m) and m.group(1) == today, m.group(1) if m else 'missing')
+# No images on article pages by design (matches water format) → alt N/A.
+for loc, aid, p in SEO_PAGES:
+    h = (DIST / (p.lstrip('/') + 'index.html')).read_text(encoding='utf-8')
+    check(f'{p}: no <img> (alt N/A by design)', '<img' not in h)
 
 print()
 if fails:

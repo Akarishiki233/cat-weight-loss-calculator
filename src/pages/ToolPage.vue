@@ -5,6 +5,7 @@ import { useRoute, RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { localeFromPath } from '../lib/calc.js'
 import { TOOL_LOCALES, toolI18nKey, toolPagePath } from '../lib/tool-pages.js'
+import { articlePagePath } from '../lib/article-pages.js'
 
 const props = defineProps({ toolId: { type: String, required: true } })
 const { t, tm } = useI18n()
@@ -12,6 +13,7 @@ const route = useRoute()
 const locale = computed(() => localeFromPath(route.path))
 const key = computed(() => toolI18nKey(props.toolId))
 const tk = (k, params) => t(`${key.value}.${k}`, params)
+const seniorGuidePath = computed(() => articlePagePath(locale.value, 'senior'))
 const toolIcon = { water: '💧', bcs: '⚖️', age: '🎂' }
 const bcsBtnClass = (n) => (n < 4 ? 'low' : n <= 5 ? 'ideal' : 'high')
 
@@ -260,6 +262,13 @@ useHead({
       <h2>{{ t('readMore.title') }}</h2>
       <p>{{ t('readMore.body') }}</p>
       <RouterLink class="btn btn-outline" to="/zh/guides/water/">{{ t('readMore.btn') }}</RouterLink>
+    </section>
+
+    <!-- further reading: senior cat care guide (all locales) -->
+    <section v-if="toolId === 'age'" class="card read-more">
+      <h2>{{ tk('guideTitle') }}</h2>
+      <p>{{ tk('guideBody') }}</p>
+      <RouterLink class="btn btn-outline" :to="seniorGuidePath">{{ tk('guideBtn') }}</RouterLink>
     </section>
 
     <section class="card">
