@@ -163,3 +163,18 @@
   @media(max-width:480px){
     .density-block .seg{margin-bottom:20px}
   }
+
+/* ---------- weight tracker sheet: print isolation ----------
+   (the sheet modal is teleported to <body>, so hiding #app is enough) */
+@page { size: A4 portrait; margin: 0; }
+@media print {
+  body.printing-sheet #app { display: none !important; }
+  body.printing-sheet .tracker-modal {
+    position: static !important; overflow: visible !important;
+    background: #fff !important; padding: 0 !important;
+  }
+  body.printing-sheet .tracker-modal .no-print { display: none !important; }
+  body.printing-sheet .tracker-modal .tracker-sheet {
+    box-shadow: none !important; margin: 0 !important; border-radius: 0 !important;
+  }
+}
