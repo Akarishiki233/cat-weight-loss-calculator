@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { localeFromPath } from '../lib/calc.js'
-import { TOOL_LOCALES, toolI18nKey, toolPagePath } from '../lib/tool-pages.js'
+import { TOOL_IDS, TOOL_LOCALES, toolI18nKey, toolPagePath } from '../lib/tool-pages.js'
 import { articlePagePath } from '../lib/article-pages.js'
 
 const props = defineProps({ toolId: { type: String, required: true } })
@@ -15,6 +15,15 @@ const key = computed(() => toolI18nKey(props.toolId))
 const tk = (k, params) => t(`${key.value}.${k}`, params)
 const seniorGuidePath = computed(() => articlePagePath(locale.value, 'senior'))
 const toolIcon = { water: '💧', bcs: '⚖️', age: '🎂' }
+/* Related tools: interlink the tool matrix so every tool page passes
+   equity to the others (same locale). */
+const relatedTools = computed(() =>
+  TOOL_IDS.filter((id) => id !== props.toolId).map((id) => ({
+    title: t(`tool${id}.title`),
+    path: toolPagePath(locale.value, id),
+    icon: toolIcon[id],
+  })),
+)
 const bcsBtnClass = (n) => (n < 4 ? 'low' : n <= 5 ? 'ideal' : 'high')
 
 /* ---------- water ---------- */
@@ -274,6 +283,15 @@ useHead({
     <section class="card">
       <h2>{{ tk('methodTitle') }}</h2>
       <p>{{ tk('methodBody') }}</p>
+    </section>
+
+    <section class="card">
+      <h2>{{ t('relatedTools.title') }}</h2>
+      <ul class="tips">
+        <li v-for="r in relatedTools" :key="r.path">
+          <RouterLink :to="r.path">{{ r.icon }} {{ r.title }}</RouterLink>
+        </li>
+      </ul>
     </section>
 
     <section class="card">

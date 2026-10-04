@@ -267,6 +267,12 @@ export default {
     guideBtn: "「シニア猫ケア完全ガイド」を読む"
 
   },
+  relatedTools: {
+    title: "関連ツール",
+  },
+  relatedGuides: {
+    title: "関連ガイド",
+  },
   articleguides_weightloss: {
     title: "猫ダイエット完全ガイド：肥満猫のための安全な体重管理プラン",
     metaDesc: "猫の肥満は健康の大敵。BCSチェックで判定し、理想体重からカロリーを計算、週1-2%の安全ペースで猫ダイエットを成功させる完全ガイド。",

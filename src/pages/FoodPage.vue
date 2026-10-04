@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute, RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { rer, localeFromPath, foodBrand, foodProduct } from '../lib/calc.js'
-import { pageLocales, foodPagePath } from '../lib/food-pages.js'
+import { pageLocales, foodPagePath, relatedFoodLists } from '../lib/food-pages.js'
 import { articlePagePath } from '../lib/article-pages.js'
 import foodsData from '../data/cat-foods.json'
 
@@ -41,15 +41,18 @@ const row4 = computed(() => rows.value.find((r) => r.w === 4))
 
 // Related feeding guides: same market (so the page exists in this locale),
 // same brand first, excluding self. Keeps internal link equity after the
-// homepage chip cloud was removed.
+// homepage chip cloud was removed. relatedFoodLists() guarantees no orphan:
+// every food appears in at least one other food's list.
 const relatedFoods = computed(() => {
-  const f = food.value
-  const sameMarket = foodsData.foods.filter((o) => o.market === f.market && o.id !== f.id)
-  sameMarket.sort((a, b) => (b.brand === f.brand) - (a.brand === f.brand))
-  return sameMarket.slice(0, 4).map((o) => ({
-    name: `${foodBrand(o, isZh.value)} ${foodProduct(o, isZh.value)}`,
-    path: foodPagePath(locale.value, o.id),
-  }))
+  const lists = relatedFoodLists(foodsData.foods)
+  const byId = new Map(foodsData.foods.map((o) => [o.id, o]))
+  return (lists.get(food.value.id) || []).map((id) => {
+    const o = byId.get(id)
+    return {
+      name: `${foodBrand(o, isZh.value)} ${foodProduct(o, isZh.value)}`,
+      path: foodPagePath(locale.value, o.id),
+    }
+  })
 })
 
 const faqItems = computed(() => [

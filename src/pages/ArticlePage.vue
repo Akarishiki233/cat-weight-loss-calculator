@@ -11,6 +11,7 @@ import {
   articleCtaPath,
   ARTICLE_DATES,
   ARTICLE_AUTHOR,
+  ARTICLE_IDS,
   ARTICLE_LOCALES,
 } from '../lib/article-pages.js'
 
@@ -32,6 +33,16 @@ const datePublished = computed(() => ARTICLE_DATES[props.articleId] || '2026-10-
 const articleLocales = computed(() => ARTICLE_LOCALES[props.articleId] || [locale.value])
 const xDefaultLocale = computed(() =>
   articleLocales.value.includes('en') ? 'en' : articleLocales.value[0],
+)
+/* Related guides: interlink the guide matrix. Only guides published in the
+   current locale are linked (e.g. water is zh-only). */
+const relatedGuides = computed(() =>
+  ARTICLE_IDS.filter(
+    (id) => id !== props.articleId && (ARTICLE_LOCALES[id] || []).includes(locale.value),
+  ).map((id) => ({
+    title: t(`articleguides_${id}.title`),
+    path: articlePagePath(locale.value, id),
+  })),
 )
 
 useHead({
@@ -141,6 +152,15 @@ useHead({
         <h3>{{ f.q }}</h3>
         <p>{{ f.a }}</p>
       </div>
+    </section>
+
+    <section class="card">
+      <h2>{{ t('relatedGuides.title') }}</h2>
+      <ul class="tips">
+        <li v-for="g in relatedGuides" :key="g.path">
+          <RouterLink :to="g.path">{{ g.title }}</RouterLink>
+        </li>
+      </ul>
     </section>
 
     <section class="card">

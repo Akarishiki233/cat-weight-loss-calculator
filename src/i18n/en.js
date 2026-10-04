@@ -267,6 +267,12 @@ export default {
     guideBtn: "Read the Senior Cat Care Guide"
 
   },
+  relatedTools: {
+    title: "Related tools",
+  },
+  relatedGuides: {
+    title: "Related guides",
+  },
   articleguides_weightloss: {
     title: "Cat Weight Loss Guide: Safe Diet Plan for Overweight Cats",
     metaDesc: "A complete cat weight loss guide: BCS self-checks, safe fat loss of 1 to 2% per week, calorie plans by ideal weight, and maintenance tips to prevent rebound.",

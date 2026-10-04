@@ -346,6 +346,12 @@ export default {
     btn: "阅读《猫咪饮水完全指南》"
 
   },
+  relatedTools: {
+    title: "相关工具",
+  },
+  relatedGuides: {
+    title: "相关指南",
+  },
   articleguides_weightloss: {
     title: "猫咪减肥完全指南：超重猫安全瘦身计划与体重管理攻略",
     metaDesc: "超重和肥胖会影响猫咪健康。本指南教你用BCS自测、按理想体重算热量，安全瘦身每周1-2%，附喂食计划与维持期攻略，让猫咪减肥更科学。",

@@ -267,6 +267,12 @@ export default {
     guideBtn: "「노묘 케어 완전 가이드」 읽기"
 
   },
+  relatedTools: {
+    title: "관련 도구",
+  },
+  relatedGuides: {
+    title: "관련 가이드",
+  },
   articleguides_weightloss: {
     title: "고양이 다이어트 완전 가이드: 비만 고양이 안전 체중 관리 플랜",
     metaDesc: "고양이 비만은 건강의 적입니다. BCS로 판단하고 이상 체중 기준 칼로리 계산으로 주 1-2% 안전하게 체중을 관리하는 가이드.",
